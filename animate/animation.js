@@ -27,7 +27,7 @@ function next(callback) {
  * @constructor
  */
 function Animation() {
-	this.taskQueue = [];		//任务队列
+	this.taskQueue = [];			//任务队列
 	this.timeline = new Timeline();	//时间轴对象
 	this.state = STATE_INITIAL;		//初始化状态
 	this.index = 0;

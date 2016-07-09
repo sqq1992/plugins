@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>侧边栏的滑出</title>
+    <link rel="stylesheet" href="../bootstrap.css" />
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+
+
+    <button type="button" class="btn btn-primary pull-right" data-toggle="slider" data-target="#mySlider">点击弹出则边栏</button>
+
+    <div id="mySlider" class="slider fade" data-name="sun" data-age="24">
+        <div class="slider-content">
+            <h1>好的啊</h1>
+            <h2>漂亮啊</h2>
+            <button type="button" class="btn btn-danger" data-dismiss="slider">关闭侧边栏</button>
+        </div>
+    </div>
+
+    <p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p>
+    <p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p>
+    <p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p>
+    <p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p>
+    <p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p>
+    <p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p>
+    <p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p><p>11</p>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/plugin.js"></script>
+    <script>
+
+        $("#mySlider").on('show.slider', function () {
+            console.log("show");
+        });
+
+        $("#mySlider").on('shown.slider', function () {
+            console.log("shown");
+        });
+
+
+        $("#mySlider").on('hide.slider', function () {
+            console.log("hide");
+        });
+
+        $("#mySlider").on('hidden.slider', function () {
+            console.log("hidden");
+        });
+
+
+
+
+
+    </script>
+</body>
+</html>

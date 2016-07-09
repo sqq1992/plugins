@@ -140,11 +140,7 @@ Timeline.prototype.startTimeline = function (nowTime) {
 };
 
 
-var ani = new Timeline();
-ani.onenterframe = function () {
-	console.log(333);
-};
-ani.start();
+
 
 
 

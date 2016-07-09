@@ -14,17 +14,7 @@ var leftRunningMap = ["0 -373", "-175 -376", "-350 -377", "-524 -377", "-699 -37
 var rabbitWinMap = ["0 0", "-198 0", "-401 0", "-609 0", "-816 0", "0 -96", "-208 -97", "-415 -97", "-623 -97", "-831 -97", "0 -203", "-207 -203", "-415 -203", "-623 -203", "-831 -203", "0 -307", "-206 -307", "-414 -307", "-623 -307"];
 var rabbitLoseMap = ["0 0", "-163 0", "-327 0", "-491 0", "-655 0", "-819 0", "0 -135", "-166 -135", "-333 -135", "-500 -135", "-668 -135", "-835 -135", "0 -262"];
 
-
-//测试图片的加载
-var test1 = function (boolen) {
-	console.log(boolen);
-};
-//loadImage(images,test1);
-
-
-loadImag(images,test1);
-
-//repeat();
+repeat();
 //run();
 //win();
 //lose();
@@ -34,8 +24,7 @@ function repeat() {
 	//测试脚本
 	//var repeatAnimation = animation().loadImage(images).changePosition($rabbit1, rightRunningMap, images[0]).repeatForever();
 
-
-	var repeatAnimation = animation().loadImage(images).changePosition($rabbit1, rightRunningMap, images[0]).repeatForever();
+	var repeatAnimation = (new Animation()).loadImage(images).changePosition($rabbit1, rightRunningMap, images[0]).repeatForever();
 	repeatAnimation.start(80);
     //
 	//var running = true;
