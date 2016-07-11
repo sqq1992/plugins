@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>弹出的插件</title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+
+    <button type="button" class="btn btn-danger" data-toggle="popup" data-target="#myPopup">点击弹出弹窗</button>
+
+    <div id="myPopup" class="popup fade">
+        <div class="model-content">
+            <h1>我我的啊啊</h1>
+            <h2>弹出聊了</h2>
+            <button type="button" class="btn btn-default" data-dismiss="popup">点击关闭弹窗</button>
+        </div>
+    </div>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/plugin.js"></script>
+
+    <script>
+
+        $("#myPopup").on("show.popup", function () {
+            console.log("show");
+        });
+
+        $("#myPopup").on("shown.popup", function () {
+            console.log("shown");
+        });
+
+        $("#myPopup").on("hide.popup", function () {
+            console.log("hide");
+        });
+
+        $("#myPopup").on("hidden.popup", function () {
+            console.log("hidden");
+        });
+
+
+    </script>
+
+</body>
+</html>
