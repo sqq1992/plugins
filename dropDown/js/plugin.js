@@ -15,6 +15,7 @@
 
     //显示
     Dropdown.prototype.show = function () {
+        var _this = this;
         if(this.isShown) return ;
         this.isShown = true;
 
@@ -27,6 +28,17 @@
             .show()
             .on("click.dismiss.dropdown",'[data-dismiss="dropdown"]', $.proxy(this.hide,this)); //绑定取消弹窗按钮
 
+        //点击文档隐藏下来区域
+        $(document).on('click.dismiss.dropdown', function (e) {
+            var id = _this.element.attr("id");
+            var target = $(e.target).parents("#"+id);   //目标元素的父节点
+
+            if(target.attr("id")!==id){
+                _this.hide();
+            }
+
+        });
+
     };
 
     //隐藏
@@ -34,10 +46,15 @@
         if(!this.isShown) return;
         this.isShown = false;
 
+        //取消点击激活下来区域的事件
+        this.element.off("click.dismiss.dropdown");
+        $(document).off("click.dismiss.dropdown");
+
         //显示的回调事件
         activeNode.removeClass("active");
         var e = $.Event("hide.dropdown");
         this.element.trigger(e);
+        this.element.hide();
 
     };
 
