@@ -8,23 +8,48 @@
 <body>
 
 
-    <ul class="nav navbar-nav">
-        <li class="active"><a href="#ad-carousel">综述</a></li>
-        <li><a href="#summary-container">简述</a></li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#myDown">特点 <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu" id="myDown">
-                <li><a href="#feature-tab" data-tab="tab-chrome">Chrome</a></li>
-                <li><a href="#feature-tab" data-tab="tab-firefox">Firefox</a></li>
-                <li><a href="#feature-tab" data-tab="tab-safari">Safari</a></li>
-                <li><a href="#feature-tab" data-tab="tab-opera">Opera</a></li>
-                <li><a href="#feature-tab" data-tab="tab-ie">IE</a></li>
-            </ul>
-        </li>
-        <li><a href="#" data-toggle="modal" data-target="#about-modal">关于</a></li>
+<div class="dropdown">
+    <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        Dropdown trigger
+        <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu" aria-labelledby="dLabel" data-toggle="showDropDown">
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
     </ul>
+</div>
+
+
+<div class="dropdown"  style="float: right;" id="ss">
+    <a id="aa"  data-toggle="dropdown" >
+        Dropdown trigger
+        <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu" aria-labelledby="dLabel" data-toggle="showDropDown">
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+        <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
+    </ul>
+</div>
 
     <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="js/plugin.js"></script>
+<script>
+
+    $("#aa").dropdown('toggle');
+
+//    $("#ss").on("shown.bs.dropdown", function () {
+//        console.log("show");
+//    });
+
+</script>
+
 </body>
 </html>
