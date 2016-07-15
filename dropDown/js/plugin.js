@@ -1,142 +1,112 @@
-+function ($) {
-    'use strict';
+/**
+ * 下拉菜单的显示与隐藏的插件
+ */
+;
+(function ($) {
 
-    // DROPDOWN CLASS DEFINITION
-    // =========================
+    //当前点击的元素
+    var activeNode = null;
 
-    var backdrop = '.dropdown-backdrop'
-    var toggle   = '[data-toggle=dropdown]'
-    var Dropdown = function (element) {
-        $(element).on('click.bs.dropdown', this.toggle)
-    }
+    var Dropdown = function (element,options) {
+        this.element = element;
+        this.options = options;
+        this.isShown = false;
+    };
 
-    Dropdown.prototype.toggle = function (e) {
-        var $this = $(this)
+    //显示
+    Dropdown.prototype.show = function () {
+        var _this = this;
+        if(this.isShown) return ;
+        this.isShown = true;
 
-        if ($this.is('.disabled, :disabled')) return
+        //显示的回调事件
+        var e = $.Event("show.newDropdown");
+        this.element.trigger(e);
 
-        var $parent  = getParent($this)
-        var isActive = $parent.hasClass('open')
+        //当前激活按钮取消激活
+        this.element
+            .show()
+            .on("click.dismiss.newDropdown",'[data-dismiss="newDropdown"]', $.proxy(this.hide,this)); //绑定取消弹窗按钮
 
-        clearMenus()
 
-        if (!isActive) {
-            if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-                // if mobile we use a backdrop because click events don't delegate
-                $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+    };
+
+    //隐藏
+    Dropdown.prototype.hide = function () {
+        if(!this.isShown) return;
+        this.isShown = false;
+
+        //显示的回调事件
+        var e = $.Event("hide.newDropdown");
+
+        this.element.off("click.dismiss.newDropdown");
+
+        this.element.trigger(e);
+        this.element.hide();
+
+    };
+
+
+    Dropdown.DEFAULTS = {
+        show:true   //点击会显示下拉框
+    };
+
+    /**
+     * 插件的实列入口
+     * @param options   传入的配置参数
+     * @returns {*}
+     */
+    $.fn.newDropdown = function (option) {
+        return this.each(function () {
+            var $this = $(this);
+            var options = $.extend({}, Dropdown.DEFAULTS, typeof option === "object" && option);
+
+            var data = $this.data("bs.newDropdown");
+            if(!data) $this.data("bs.newDropdown", data = new Dropdown($this, options));
+
+            if(typeof option==="string"){   //传入普通字符串对插件进行引用
+                data[option]();
+            }else if(options.show){         //传入配置参数对插件进行调节
+                data.show();
             }
 
-            var relatedTarget = { relatedTarget: this }
-            $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+        });
+    };
 
-            if (e.isDefaultPrevented()) return
 
-            $parent
-                .toggleClass('open')
-                .trigger('shown.bs.dropdown', relatedTarget)
+    var toggle   = '[data-toggle=newDropdown]'
+    function clearMenus(e){
+        var target = e.target;
+        var tpggle = $(toggle);
+        console.log("clear");
+        tpggle.each(function () {
+            var next = $(this).next("dropdown-menu");
+            next.hide();
+        });
 
-            $this.focus()
+    }
+
+    $(document).on("click.bs.newDropdown.data-api",clearMenus);         //清楚所有下拉显示框
+    $(document).on('click.bs.newDropdown.data-api', '[data-toggle="newDropdown"]', function (e) {
+        var $this = $(this);
+        activeNode = $this;
+        var target = $($this.attr("data-target"));  //获取目标节点
+        var option = target.data();                //获取配置参数
+
+        //阻止默认事件
+        e.preventDefault();
+
+        console.log(111);
+        //如果当前的节点是激活状态，则直接返回,否则增加active，且插件实列化
+        if($this.hasClass("active")){
+            return;
+        }else{
+            $this.addClass("active");
         }
 
-        return false
-    }
+        //实列化插件
+        target.newDropdown(option);
 
-    Dropdown.prototype.keydown = function (e) {
-        if (!/(38|40|27)/.test(e.keyCode)) return
+    });
 
-        var $this = $(this)
-
-        e.preventDefault()
-        e.stopPropagation()
-
-        if ($this.is('.disabled, :disabled')) return
-
-        var $parent  = getParent($this)
-        var isActive = $parent.hasClass('open')
-
-        if (!isActive || (isActive && e.keyCode == 27)) {
-            if (e.which == 27) $parent.find(toggle).focus()
-            return $this.click()
-        }
-
-        var desc = ' li:not(.divider):visible a'
-        var $items = $parent.find('[role=menu]' + desc + ', [role=listbox]' + desc)
-
-        if (!$items.length) return
-
-        var index = $items.index($items.filter(':focus'))
-
-        if (e.keyCode == 38 && index > 0)                 index--                        // up
-        if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
-        if (!~index)                                      index = 0
-
-        $items.eq(index).focus()
-    }
-
-    function clearMenus(e) {
-        $(backdrop).remove()
-        $(toggle).each(function () {
-            var $parent = getParent($(this));
-
-            var fatherNode = $(this).next('[data-toggle="showDropDown"]');
-            if((e && ($.contains(fatherNode[0], e.target))) || (fatherNode[0]=== (e && e.target))) return;
-
-            var relatedTarget = { relatedTarget: this }
-            if (!$parent.hasClass('open')) return
-            $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-            if (e.isDefaultPrevented()) return
-            $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-        })
-    }
-
-    function getParent($this) {
-        var selector = $this.attr('data-target')
-
-        if (!selector) {
-            selector = $this.attr('href')
-            selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') //strip for ie7
-        }
-
-        var $parent = selector && $(selector)
-
-        return $parent && $parent.length ? $parent : $this.parent()
-    }
-
-
-    // DROPDOWN PLUGIN DEFINITION
-    // ==========================
-
-    var old = $.fn.dropdown
-
-    $.fn.dropdown = function (option) {
-        return this.each(function () {
-            var $this = $(this)
-            var data  = $this.data('bs.dropdown')
-
-            if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
-            if (typeof option == 'string') data[option].call($this)
-        })
-    }
-
-    $.fn.dropdown.Constructor = Dropdown
-
-
-    // DROPDOWN NO CONFLICT
-    // ====================
-
-    $.fn.dropdown.noConflict = function () {
-        $.fn.dropdown = old
-        return this
-    }
-
-
-    // APPLY TO STANDARD DROPDOWN ELEMENTS
-    // ===================================
-
-    $(document)
-        .on('click.bs.dropdown.data-api', clearMenus)
-        .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
-        .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-        .on('keydown.bs.dropdown.data-api', toggle + ', [role=menu], [role=listbox]', Dropdown.prototype.keydown)
-
-}(jQuery);
+})(jQuery);

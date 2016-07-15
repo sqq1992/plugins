@@ -4,17 +4,24 @@
     <meta charset="UTF-8">
     <title>下拉菜单</title>
     <link rel="stylesheet" href="../bootstrap.css"/>
+
+
+    <style>
+        a.active{
+            background: red!important;
+        }
+
+    </style>
 </head>
 <body>
 
-
-<div class="dropdown">
-    <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+<div class="dropdown"   >
+    <a data-toggle="newDropdown" data-target="#bb"  >
         Dropdown trigger
         <span class="caret"></span>
     </a>
 
-    <ul class="dropdown-menu" aria-labelledby="dLabel" data-toggle="showDropDown">
+    <ul class="dropdown-menu" aria-labelledby="dLabel" id="bb">
         <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
         <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
         <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
@@ -24,13 +31,14 @@
 </div>
 
 
-<div class="dropdown"  style="float: right;" id="ss">
-    <a id="aa"  data-toggle="dropdown" >
+
+<div class="dropdown"  style="float: right;" id="cc">
+    <a data-toggle="newDropdown" data-target="#aa"  >
         Dropdown trigger
         <span class="caret"></span>
     </a>
 
-    <ul class="dropdown-menu" aria-labelledby="dLabel" data-toggle="showDropDown">
+    <ul class="dropdown-menu" aria-labelledby="dLabel" id="aa">
         <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
         <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
         <p>我的天啊</p><p>我的天啊</p><p>我的天啊</p><p>我的天啊</p>
@@ -43,11 +51,11 @@
     <script src="js/plugin.js"></script>
 <script>
 
-    $("#aa").dropdown('toggle');
+    var cc = document.getElementById("cc");
+    var aa = document.getElementById("aa");
 
-//    $("#ss").on("shown.bs.dropdown", function () {
-//        console.log("show");
-//    });
+//    console.log($.contains($(cc), $(aa)));
+
 
 </script>
 
