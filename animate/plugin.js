@@ -510,10 +510,6 @@
 
     })();
 
-
-
-
-
     window['Aniamtion'] = Aniamtion;
 })();
 
