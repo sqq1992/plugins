@@ -75,6 +75,15 @@
     };
 
     /**
+     * 判断function是否为function
+     */
+    if (typeof /./ != 'function' && typeof Int8Array != 'object') {
+        _.isFunction = function(obj) {
+            return typeof obj == 'function' || false;
+        };
+    }
+
+    /**
      * 判断underscore用于哪里
      */
     if (typeof exports !== 'undefined') {
@@ -109,7 +118,6 @@
         return obj;
     };
 
-    console.log(root._);
 
     /**
      * 判断一个对象是否为数组
@@ -119,6 +127,22 @@
     var isArrayLike = function(collection) {
         var length = collection != null && collection.length;
         return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+    };
+
+    var cb = function(value, context, argCount) {
+        if (value == null) return _.identity;
+        if (_.isFunction(value)) return optimizeCb(value, context, argCount);
+        if (_.isObject(value)) return _.matcher(value);
+        return _.property(value);
+    };
+
+    /**
+     * 返回自己原本的值
+     * @param value
+     * @returns {*}
+     */
+    _.identity = function(value) {
+        return value;
     };
 
     /**
@@ -141,7 +165,7 @@
     };
 
     /**
-     * 对对象的key值进行遍历，并且将其存入数组，返回
+     * 对对象的key值进行遍历，并且将其存入数组，返回新的数组
      * @param obj   需要遍历的对象
      */
     _.keys = function (obj) {
@@ -152,6 +176,26 @@
         var keys = [];
         for(var i in obj) if(_.has(obj,i)) keys.push(i);
         return keys;
+    };
+
+    /**
+     * 通过转换函数(iteratee迭代器)映射列表中的每个值产生价值的新数组
+     * @param obj   传入的数组或者对象
+     * @param iteratee  处理数组value值得函数
+     * @param context   上下文对象
+     * @returns {*} 返回映射之后的数组
+     */
+    _.map = function (obj,iteratee,context) {
+        iteratee = cb(iteratee, context);   //要执行的回调函数
+
+        var keys = !isArrayLike(obj) && _.keys(obj),
+            length = (keys || obj).length,
+            results = Array(length);
+        for(var index= 0;index<length;index++){
+            var currentKey = keys ? keys[index] : index;
+            results[index] = iteratee(obj[currentKey], currentKey, obj);
+        }
+        return results;
     };
 
 }.call(this));

@@ -9,8 +9,12 @@
 
 <script>
 
-    console.log(_.keys([1, 2, 3, 4, 5]));
 
+    var a = {a: 1, b: 2, c: 3};
+
+    _.map(a, function (num,key) {
+        console.log(num, key);
+    });
 
 </script>
 </body>
