@@ -96,6 +96,27 @@
     }
 
     /**
+     * 返回一个对象的key值的value值，不存在则返回undefined
+     * @param key   传入的key值
+     * @returns {Function}  返回这个函数
+     */
+    _.property = function(key) {
+        return function(obj) {
+            return obj == null ? void 0 : obj[key];
+        };
+    };
+
+    /**
+     * 返回数组的中对象的key值的的集合数组
+     * @param obj   传入的对象
+     * @param key   key值
+     * @returns {*|Array}   返回数组
+     */
+    _.pluck = function(obj, key) {
+        return _.map(obj, _.property(key));
+    };
+
+    /**
      * 对一个对象进行遍历
      * @param obj   传入的遍历的对象或者数组
      * @param iteratee  传入的回调函数
@@ -196,6 +217,34 @@
             results[index] = iteratee(obj[currentKey], currentKey, obj);
         }
         return results;
+    };
+
+    /**
+     * 对数组里的值进行从小到大的排序
+     * @param obj   传入的对象
+     * @param iteratee  处理这个数组或者对象的函数
+     * @param context   上下文
+     * @private
+     */
+    _.sortBy = function (obj,iteratee,context) {
+        iteratee = cb(iteratee, context);
+        //根据value值筛选特定值组成数组
+        return _.pluck(_.map(obj, function (value, index, list) {   //将这个对象先衍射为数组中的普通对象
+            return {
+                value: value,
+                index: index,
+                criteria: iteratee(value, index, list)
+            }
+        }).sort(function (left, right) {        //对这个数组中的普通对象进行排序
+            var a = left.criteria;
+            var b = right.criteria;
+            if (a !== b) {
+                if (a > b || a === void 0) return 1;
+                if (a < b || b === void 0) return -1;
+            }
+            return left.index - right.index;
+        }), 'value');
+
     };
 
 }.call(this));
