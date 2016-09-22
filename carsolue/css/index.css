@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+ul,li{
+    list-style: none;
+}
+
+
+.carsolue{
+    width: 1000px;
+    height: 270px;
+    position: relative;
+    margin: 40px auto;
+}
+
+.carsolue .btn{
+    height: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 30px;
+    cursor: pointer;
+}
+.carsolue .pre-btn{
+    background-image: url("../img/btn_l.png");
+    left: 0;
+}
+.carsolue .next-btn{
+    background-image: url("../img/btn_r.png");
+    right: 0;
+}
+
+/**
+ *  图片展示列表的样式
+ **/
+.pic-box{
+    width: 100%;
+    height: 100%;
+}
+.pic-box li{
+    position: absolute;
+}
+.pic-box li a{
+    display: block;
+}
+.pic-box li a img{
+    display: block;
+}
