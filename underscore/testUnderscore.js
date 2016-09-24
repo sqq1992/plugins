@@ -247,4 +247,32 @@
 
     };
 
+
+    /**
+     * 比较两个深度对象的值是否相同
+     * @param a
+     * @param b
+     * @param aStack
+     * @param bStack
+     */
+    var eq = function (a, b, aStack, bStack) {
+
+        //0和-0在_.isEqual中是不相等的，可能-0没有意义
+        if(a===b){
+            return a !== 0 || 1 / a === 1 / b;
+        }
+
+        //筛选掉null或者undefined
+        if(a==null || b ==null) return a === b;
+    };
+
+    /**
+     * 执行两个对象之间的优化深度比较，确定他们是否应被视为相等。
+     * @param a 参数1
+     * @param b 参数2
+     */
+    _.isEqual = function (a,b) {
+        return eq(a, b);
+    };
+
 }.call(this));
