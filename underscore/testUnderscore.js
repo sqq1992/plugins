@@ -316,6 +316,43 @@
 
         }
 
+        //堆栈
+        aStack = aStack || [];
+        bStack = bStack || [];
+        var length = aStack.length;
+        while (length--) {      //堆栈里的参数是否相同
+            if (aStack[length] === a) return bStack[length] === b;
+        }
+
+        //增加堆栈的数据
+        aStack.push(a);
+        bStack.push(b);
+
+        if(areArrays){  //如果是数组的话
+            length = a.length;
+            if(length !== b.length) return false;
+            while(length--){    //进行深度嵌套对比里面的数据是否相等
+                if (!eq(a[length], b[length], aStack, bStack)) return false;
+            }
+        }else{      //如果不是数组对象
+            var keys = _.keys(a), key;
+            length = keys.length;
+
+            // a 和 b 对象的键数量不同
+            if (_.keys(b).length !== length) return false;
+
+            while (length--) {
+                // 递归比较
+                key = keys[length];
+                if (!(_.has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
+            }
+        }
+
+        //将堆栈弹出
+        aStack.pop();
+        bStack.pop();
+        return true;
+
     };
 
     /**
