@@ -30,8 +30,11 @@
             this._setPos();
 
             //配置事件信息
-            this._initEvent();
+            if(this.picLength===1){
 
+            }else{
+                this._initEvent();
+            }
         },
 
         //配置节点信息
@@ -44,8 +47,11 @@
 
             }else if(this.picLength>2){
                 if(this.picLength%2===0){
-                    this.picBox.append(this.pic.first().clone());
-                    this.pic = this.element.find(".pic-box li");    //图片列表
+                    this.isOdd = false;
+                    //this.picBox.append(this.pic.first().clone());
+                    //this.pic = this.element.find(".pic-box li");    //图片列表
+                }else{
+                    this.isOdd = true;
                 }
             }
             this.firstPic = this.pic.first();
@@ -55,10 +61,11 @@
 
         //配置位置信息
         _setPos:function(){
+            var _this = this;
             var options = this.options;
             var SlicePic = this.pic.slice(1),
-                sliceSize = SlicePic.size() / 2,
-                level = Math.floor(this.pic.size() / 2),  //
+                sliceSize = Math.ceil(SlicePic.size() / 2),
+                level = Math.ceil(SlicePic.size() / 2),  //
                 rightPic = SlicePic.slice(0, sliceSize), //右边的图片
                 leftPic = SlicePic.slice(sliceSize),    //左边的图片
                 scale = options.scale,                  //缩放比例
@@ -81,13 +88,13 @@
 
             //配置第一个节点
             this.firstPic.css({
-                width:rw,
-                height:rh,
-                opacity:1,
-                left:fistLeft,
-                top:(height-rh)/2,
-                zIndex:level+1
-            });
+                width: rw,
+                height: rh,
+                opacity: 1,
+                left: fistLeft,
+                top: (height - rh) / 2,
+                zIndex: level + 1
+            }).addClass('active');
 
             //配置左右的按钮属性
             this.preBtn.css({
@@ -112,7 +119,7 @@
                 $(this).css({
                     width:rw,
                     height:rh,
-                    opacity:1/(++j),
+                    opacity:1/(_this.picLength!==2?(++j):((++j)+1)),
                     left:fixOffsetLeft-(rw-j*gap),
                     top:(height-rh)/2,
                     zIndex:tempZindex
@@ -122,17 +129,28 @@
 
             //配置右节点的宽高等属性
             var tempLeftLevel = level;
+            var firstFlag = true;   //仅限于第一次
+            var tempI = 0;
             leftPic.each(function (i) {
+
+                if(!_this.isOdd && firstFlag){
+                    rw = rw/scale;
+                    rh = rh/scale;
+                    tempI = 1;
+                    tempLeftLevel -= 1;
+                }
+                firstFlag = false;
 
                 $(this).css({
                     width:rw,
                     height:rh,
                     opacity:1/tempLeftLevel,
-                    left:gap*i,
+                    left:gap*tempI,
                     top:(height-rh)/2,
-                    zIndex:i
+                    zIndex:tempI
                 });
 
+                tempI++;
                 rw = rw/scale;
                 rh = rh/scale;
                 tempLeftLevel = tempLeftLevel - 1;
@@ -175,10 +193,13 @@
         _rotate:function(dir){
             var _this = this;
             var zIndexArray = [];   //不需要进行动画
+            var cbCount = 0;
+            var activeFlag = true;//切换激活点的标志
 
             this.pic.each(function () {
                 var $this = $(this),
-                    referNode = null;   //参数属性节点
+                    referNode = null,   //参数属性节点
+                    activeNode = null;  //激活的节点
 
                 switch (dir){
                     case 'right':
@@ -189,6 +210,22 @@
                         break;
                 }
 
+                //切换激活节点
+                if($this.hasClass('active') && activeFlag){
+                    _this.pic.removeClass('active');
+                    switch (dir){
+                        case 'right':
+                            activeNode = $this.prev().length?$this.prev():_this.lastPic;
+                            break;
+                        case 'left':
+                            activeNode = $this.next().length?$this.next():_this.firstPic;
+                            break;
+                    }
+                    activeNode.addClass('active');
+                    activeFlag = false;
+                }
+
+                //下个或者上个节点的属性
                 var width = referNode.css("width"),
                     height = referNode.css('height'),
                     opacity = referNode.css('opacity'),
@@ -198,6 +235,7 @@
 
                 zIndexArray.push(zIndex)
 
+                //异步执行动画
                 $this.animate(
                     {
                         width:width,
@@ -209,6 +247,14 @@
                     _this.options.speed,
                     function(){
                         _this.rotateFlag = true;
+
+                        ++cbCount;
+
+                        if(cbCount===_this.pic.length){
+                            //执行回调函数
+                            _this.options.cb();
+                        }
+
                     }
                 );
 

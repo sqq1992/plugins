@@ -13,12 +13,12 @@
     <ul class="pic-box">
         <li><a href="#"><img src="img/1.jpg"></a></li>
         <li><a href="#"><img src="img/2.jpg"></a></li>
-        <li><a href="#"><img src="img/3.jpg"></a></li>
-        <li><a href="#"><img src="img/4.jpg"></a></li>
-        <li><a href="#"><img src="img/5.jpg"></a></li>
-        <li><a href="#"><img src="img/2.jpg"></a></li>
-        <li><a href="#"><img src="img/3.jpg"></a></li>
-        <li><a href="#"><img src="img/4.jpg"></a></li>
+        <!--<li><a href="#"><img src="img/3.jpg"></a></li>-->
+        <!--<li><a href="#"><img src="img/4.jpg"></a></li>-->
+        <!--<li><a href="#"><img src="img/5.jpg"></a></li>-->
+        <!--<li><a href="#"><img src="img/2.jpg"></a></li>-->
+        <!--<li><a href="#"><img src="img/3.jpg"></a></li>-->
+        <!--<li><a href="#"><img src="img/4.jpg"></a></li>-->
     </ul>
 </div>
 
@@ -26,7 +26,11 @@
 <script src="js/plugin.js"></script>
 <script>
 
-    $("#carsolue").carousel({});
+    $("#carsolue").carousel({
+        cb:function(){
+            console.log(111);
+        }
+    });
 
 </script>
 </body>

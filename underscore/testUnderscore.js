@@ -250,8 +250,8 @@
 
     /**
      * 比较两个深度对象的值是否相同
-     * @param a
-     * @param b
+     * @param a     第一个比较参数
+     * @param b     第二个比较参数
      * @param aStack
      * @param bStack
      */
@@ -264,6 +264,58 @@
 
         //筛选掉null或者undefined
         if(a==null || b ==null) return a === b;
+
+        //如果a和b是underscore的oop对象
+        //那么比较_wrapped属性
+        if(a instanceof _) a = a._wrapped;
+        if(b instanceof _) b = b._wrapped;
+
+        //数据类型
+        var className = toString.call(a);
+
+        //判断a和b的数据类型是否相等
+        if(className !== toString.call(b)) return false;
+
+        //判断a和b的基础类型值是否相同
+        switch (className){
+            case '[object RegExp]':     //对正则和字符串转换为字符串进行比较
+            case '[object String]':
+                // 转为 String 类型进行比较
+                return '' + a === '' + b;
+
+            case '[object Number]':
+
+                //如果两个参数是NaN，则也认为是相等
+                if (+a !== +a) return +b !== +b;
+
+                //对0和-0做特殊处理，0和-0js里相等，但实际是不相等的
+                return +a === 0 ? 1 / +a === 1 / b : +a === +b;
+
+            case '[object Date]':
+            case '[object Boolean]':
+                return +a === +b;
+        }
+
+        // 判断 a 是否是数组
+        var areArrays = className === '[object Array]';
+        //如果a参数不是数组的话
+        if(!areArrays){
+            //如果不是对象，返回false
+            if(typeof a!='object' || typeof b!='object') return false;
+
+            // 通过构造函数来判断 a 和 b 是否相同
+            // 但是，如果 a 和 b 的构造函数不同
+            // 也并不一定 a 和 b 就是 unequal
+            // 比如 a 和 b 在不同的 iframes 中！
+            var aCtor = a.constructor, bCtor = b.constructor;
+            if (aCtor !== bCtor && !(_.isFunction(aCtor) && aCtor instanceof aCtor &&
+                _.isFunction(bCtor) && bCtor instanceof bCtor)
+                && ('constructor' in a && 'constructor' in b)) {
+                return false;
+            }
+
+        }
+
     };
 
     /**
@@ -274,5 +326,12 @@
     _.isEqual = function (a,b) {
         return eq(a, b);
     };
+
+    //_.isFunction 在 old v8, IE 11 和 Safari 8 下的兼容
+    if (typeof /./ != 'function' && typeof Int8Array != 'object') {
+        _.isFunction = function(obj) {
+            return typeof obj == 'function' || false;
+        };
+    }
 
 }.call(this));
