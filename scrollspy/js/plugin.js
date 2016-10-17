@@ -1,186 +1,119 @@
-/**
- * 滚动监听的插件
- */
-+function ($) {
-    'use strict';
 
-    // SCROLLSPY CLASS DEFINITION
-    // ==========================
 
-    function ScrollSpy(element, options) {
-        this.$body          = $(document.body)
-        //如果容器是body则用window的容器，否则不
-        this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
-        this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
-        this.selector       = (this.options.target || '') + ' .nav li > a'
-        this.offsets        = []
-        this.targets        = []
-        this.activeTarget   = null
-        this.scrollHeight   = 0
+;(function($){
 
-        this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
-        this.refresh()
-        this.process()
-    }
+    var ScrollNav = function (element, options) {
+        this.parent = element;
+        this.options = options;
 
-    ScrollSpy.VERSION  = '3.3.4'
+        //初始化
+        this.init();
+    };
 
-    ScrollSpy.DEFAULTS = {
-        offset: 10
-    }
+    ScrollNav.prototype = {
+        constructor:ScrollNav,
 
-    /**
-     * 获取滚动区域元素的内容高度
-     * @returns {number|*}
-     */
-    ScrollSpy.prototype.getScrollHeight = function () {
-        return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
-    }
+        //初始化节点和函数
+        init:function(){
 
-    /**
-     * 计算当前页面内所有滚动容器内的id集合和每个Id元素距离浏览器顶部的像素距离
-     */
-    ScrollSpy.prototype.refresh = function () {
-        var that          = this
-        var offsetMethod  = 'offset'
-        var offsetBase    = 0
+            this._initNode();
+            this._initEvent();
+        },
 
-        this.offsets      = []
-        this.targets      = []
-        this.scrollHeight = this.getScrollHeight()
+        //初始化节点信息
+        _initNode:function(){
+            this.navNodes = this.parent.find("[data-scroll-nav]");  //当前的导航点们
+            this.window = $(window);
+            this.htmlBody = $('html,body');
+            this.detailArry = [];
 
-        if (!$.isWindow(this.$scrollElement[0])) {
-            offsetMethod = 'position'
-            offsetBase   = this.$scrollElement.scrollTop()
+        },
+
+        //初始化函数信息
+        _initEvent:function(){
+            var _this = this,
+                options = this.options;
+
+            var scrollFlag = true;
+            /**
+             * 点击导航条到指定的位置去
+             */
+            this.parent.off("click.ScrollNav").on("click.ScrollNav", "[data-scroll-nav]", function () {
+                var $this = $(this);
+
+                $this.addClass('active').siblings().removeClass('active');
+                var target = $('[data-scroll-target="'+$this.attr('data-scroll-nav')+'"]');
+
+
+                scrollFlag = false;
+
+                _this.htmlBody.animate({
+                    scrollTop: target.offset().top
+                }, options.animateTime,function(){
+                    scrollFlag = true;
+                });
+
+            });
+
+
+            /**
+             * 执行导航栏的滑动事件
+             */
+            this.window.off("scroll.ScrollNav").on("scroll.ScrollNav", function () {
+
+                //如果点击导航栏，则不执行下面的函数
+                if(!scrollFlag){
+                    return false;
+                }
+
+                var scrollTop = $(this).scrollTop(),
+                    shows = $("[data-scroll-target]");
+
+                shows.each(function () {
+                    var $this = $(this),
+                        height = $this.height(),
+                        top = $this.offset().top;
+
+                    var target;
+                    if((scrollTop-height)<=top && top<=scrollTop){
+                        target = $('[data-scroll-nav="' + $this.attr('data-scroll-target') + '"]');
+                        target.addClass('active').siblings().removeClass('active');
+                        return false;
+                    }
+
+                });
+
+            });
+
+            //默认执行一次滑动事件
+            this.window.trigger('scroll.ScrollNav');
+
         }
 
-        this.$body
-            .find(this.selector)
-            .map(function () {
-                var $el   = $(this)
-                var href  = $el.data('target') || $el.attr('href')
-                var $href = /^#./.test(href) && $(href)
+    };
 
-                return ($href
-                    && $href.length
-                    && $href.is(':visible')
-                    && [[$href[offsetMethod]().top + offsetBase, href]]) || null
-            })
-            .sort(function (a, b) { return a[0] - b[0] })
-            .each(function () {
-                that.offsets.push(this[0])
-                that.targets.push(this[1])
-            })
-    }
-
-    /**
-     * 每次滚动都要对滚动高度进行判断，然后设置高亮菜单元素
-     * @returns {boolean}
-     */
-    ScrollSpy.prototype.process = function () {
-        var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
-
-        //获取滚动区域元素的高度
-        var scrollHeight = this.getScrollHeight();
-
-        //获取可以滚动的高度
-        var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height();
-
-        var offsets      = this.offsets
-        var targets      = this.targets
-        var activeTarget = this.activeTarget
-        var i
-
-        if (this.scrollHeight != scrollHeight) {
-            this.refresh()
-        }
-
-        if (scrollTop >= maxScroll) {
-            return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
-        }
-
-        if (activeTarget && scrollTop < offsets[0]) {
-            this.activeTarget = null
-            return this.clear()
-        }
-
-        for (i = offsets.length; i--;) {
-            activeTarget != targets[i]
-            && scrollTop >= offsets[i]
-            && (offsets[i + 1] === undefined || scrollTop < offsets[i + 1])
-            && this.activate(targets[i])
-        }
-    }
-
-    ScrollSpy.prototype.activate = function (target) {
-        this.activeTarget = target
-
-        this.clear()
-
-        var selector = this.selector +
-            '[data-target="' + target + '"],' +
-            this.selector + '[href="' + target + '"]'
-
-        var active = $(selector)
-            .parents('li')
-            .addClass('active')
-
-        if (active.parent('.dropdown-menu').length) {
-            active = active
-                .closest('li.dropdown')
-                .addClass('active')
-        }
-
-        active.trigger('activate.bs.scrollspy')
-    }
-
-    ScrollSpy.prototype.clear = function () {
-        $(this.selector)
-            .parentsUntil(this.options.target, '.active')
-            .removeClass('active')
-    }
+    //默认配置参数
+    ScrollNav.DEFAULTS = {
+        animateTime:200 //动画运动时间
+    };
 
 
     /**
-     * 插件的启动函数
-     * @param option    传入的配置参数
-     * @returns {*}     返回jquery的实列
-     * @constructor
+     * 插件的启动入口
+     * @param option
+     * @returns {*}
      */
-    function Plugin(option) {
+    $.fn.scrollNav = function (option) {
+
         return this.each(function () {
-            var $this   = $(this)
-            var data    = $this.data('bs.scrollspy')
-            var options = typeof option == 'object' && option
+            var $this = $(this),
+                options = $.extend({},ScrollNav.DEFAULTS,typeof option==='object' && option);
 
-            if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
-            if (typeof option == 'string') data[option]()
-        })
-    }
+            var data = $this.data("bs.scrollNav");
+            if(!data) $this.data('bs.scrollNav', data = new ScrollNav($this, options));
 
-    var old = $.fn.scrollspy
+        });
 
-    $.fn.scrollspy             = Plugin
-    $.fn.scrollspy.Constructor = ScrollSpy
+    };
 
-
-    // SCROLLSPY NO CONFLICT
-    // =====================
-
-    $.fn.scrollspy.noConflict = function () {
-        $.fn.scrollspy = old
-        return this
-    }
-
-
-    // SCROLLSPY DATA-API
-    // ==================
-
-    $(window).on('load.bs.scrollspy.data-api', function () {
-        $('[data-spy="scroll"]').each(function () {
-            var $spy = $(this);
-            Plugin.call($spy, $spy.data())
-        })
-    })
-
-}(jQuery);
+})(jQuery)
