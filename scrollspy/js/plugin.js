@@ -43,7 +43,6 @@
                 var target = $('[data-scroll-target="'+$this.attr('data-scroll-nav')+'"]');
 
 
-
                 _this.htmlBody.animate({
                     scrollTop: target.offset().top
                 }, options.animateTime);
@@ -70,7 +69,9 @@
                         return false;
                     }
                 });
-                if(show){
+
+                var active = $("[data-scroll-nav]").filter('.active');
+                if(show && (show.attr('data-scroll-target')!==active.attr('data-scroll-nav'))){
                     target = $('[data-scroll-nav="' + show.attr('data-scroll-target'));
                     target.addClass('active').siblings().removeClass('active');
                 }
