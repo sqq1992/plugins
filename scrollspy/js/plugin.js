@@ -25,7 +25,6 @@
             this.navNodes = this.parent.find("[data-scroll-nav]");  //当前的导航点们
             this.window = $(window);
             this.htmlBody = $('html,body');
-            this.detailArry = [];
 
         },
 
@@ -34,7 +33,6 @@
             var _this = this,
                 options = this.options;
 
-            var scrollFlag = true;
             /**
              * 点击导航条到指定的位置去
              */
@@ -45,13 +43,10 @@
                 var target = $('[data-scroll-target="'+$this.attr('data-scroll-nav')+'"]');
 
 
-                scrollFlag = false;
 
                 _this.htmlBody.animate({
                     scrollTop: target.offset().top
-                }, options.animateTime,function(){
-                    scrollFlag = true;
-                });
+                }, options.animateTime);
 
             });
 
@@ -61,27 +56,24 @@
              */
             this.window.off("scroll.ScrollNav").on("scroll.ScrollNav", function () {
 
-                //如果点击导航栏，则不执行下面的函数
-                if(!scrollFlag){
-                    return false;
-                }
-
                 var scrollTop = $(this).scrollTop(),
                     shows = $("[data-scroll-target]");
 
+                var show,
+                    target;
                 shows.each(function () {
                     var $this = $(this),
-                        height = $this.height(),
                         top = $this.offset().top;
-
-                    var target;
-                    if((scrollTop-height)<=top && top<=scrollTop){
-                        target = $('[data-scroll-nav="' + $this.attr('data-scroll-target') + '"]');
-                        target.addClass('active').siblings().removeClass('active');
+                    if(scrollTop>=top){
+                        show = $this;
+                    }else{
                         return false;
                     }
-
                 });
+                if(show){
+                    target = $('[data-scroll-nav="' + show.attr('data-scroll-target'));
+                    target.addClass('active').siblings().removeClass('active');
+                }
 
             });
 
