@@ -1,0 +1,23 @@
+*{margin: 0;padding: 0;}
+img{display: block;}
+.cl{zoom: 1}
+.cl:after{display: block;clear: both;visibility: hidden;height: 0;content: "."}
+
+#main{
+    position: relative;
+    margin: 0 auto;
+}
+.pic-box{
+    float: left;
+    padding: 15px 0 0 15px;
+}
+.box{
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 6px #ccc;
+    border-radius: 5px;
+}
+.box img{
+    width: 162px;
+    height: auto;
+}
