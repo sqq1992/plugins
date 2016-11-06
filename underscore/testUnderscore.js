@@ -107,6 +107,13 @@
     };
 
     /**
+     * 判断对象是否为函数的参数
+     */
+    _.isArguments = function(obj) {
+        return _.has(obj, 'callee');
+    };
+
+    /**
      * 返回数组的中对象的key值的的集合数组
      * @param obj   传入的对象
      * @param key   key值
@@ -362,6 +369,25 @@
      */
     _.isEqual = function (a,b) {
         return eq(a, b);
+    };
+
+    /**
+     * 判断一个对象是否为数组
+     * @type {*|Function}
+     */
+    _.isArray = nativeIsArray || function(obj) {
+            return toString.call(obj) === '[object Array]';
+    };
+
+    /**
+     * 判断一个对象是否有key值
+     * @param obj
+     * @returns {boolean}
+     */
+    _.isEmpty = function (obj) {
+        if (obj == null) return true;
+        if (isArrayLike(obj) && (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))) return obj.length === 0;
+        return _.keys(obj).length === 0;
     };
 
     //_.isFunction 在 old v8, IE 11 和 Safari 8 下的兼容
