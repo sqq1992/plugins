@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d动画效果</title>
+    <style>
+
+        *{margin: 0;padding: 0}
+
+        .main{
+            width: 400px;
+            height: 800px;
+            margin: 30px auto;
+            -webkit-perspective: 800;
+            -webkit-perspective-origin: 50% 50%;
+        }
+
+        .box{
+            width: 100px;
+            height: 400px;
+            background: red;
+            margin: 30px auto;
+
+            -webkit-transform-style:preserve-3d;
+            -webkit-transform: rotateX(0deg);
+
+        }
+        .box.active{
+            -webkit-animation: test 0.8s linear 1;
+
+        }
+
+        @keyframes test {
+            0%{
+                -webkit-transform: rotateX(0deg);
+            }
+            50%{
+                -webkit-transform: rotateX(30deg);
+            }
+            100%{
+                -webkit-transform: rotateX(0deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+
+<div class="main">
+    <div class="box" id="box"></div>
+</div>
+<script>
+
+    var box = document.getElementById('box');
+    box.onclick = function () {
+        var _this = this;
+        if(this.className==="box active"){
+            this.className = "box";
+            setTimeout(function () {
+                _this.className = 'box active';
+            },0);
+        }else{
+            this.className = 'box active';
+        }
+    };
+
+</script>
+
+</body>
+</html>
