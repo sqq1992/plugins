@@ -6,35 +6,35 @@
         this.parent = element;
         this.options = options;
 
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         this.init();
     };
 
     ScrollNav.prototype = {
         constructor:ScrollNav,
 
-        //³õÊ¼»¯½ÚµãºÍº¯Êı
+        //åˆå§‹åŒ–èŠ‚ç‚¹å’Œå‡½æ•°
         init:function(){
 
             this._initNode();
             this._initEvent();
         },
 
-        //³õÊ¼»¯½ÚµãĞÅÏ¢
+        //åˆå§‹åŒ–èŠ‚ç‚¹ä¿¡æ¯
         _initNode:function(){
-            this.navNodes = this.parent.find("[data-scroll-nav]");  //µ±Ç°µÄµ¼º½µãÃÇ
+            this.navNodes = this.parent.find("[data-scroll-nav]");  //å½“å‰çš„å¯¼èˆªç‚¹ä»¬
             this.window = $(window);
             this.htmlBody = $('html,body');
 
         },
 
-        //³õÊ¼»¯º¯ÊıĞÅÏ¢
+        //åˆå§‹åŒ–å‡½æ•°ä¿¡æ¯
         _initEvent:function(){
             var _this = this,
                 options = this.options;
 
             /**
-             * µã»÷µ¼º½Ìõµ½Ö¸¶¨µÄÎ»ÖÃÈ¥
+             * ç‚¹å‡»å¯¼èˆªæ¡åˆ°æŒ‡å®šçš„ä½ç½®å»
              */
             this.parent.off("click.ScrollNav").on("click.ScrollNav", "[data-scroll-nav]", function () {
                 var $this = $(this);
@@ -51,7 +51,7 @@
 
 
             /**
-             * Ö´ĞĞµ¼º½À¸µÄ»¬¶¯ÊÂ¼ş
+             * æ‰§è¡Œå¯¼èˆªæ çš„æ»‘åŠ¨äº‹ä»¶
              */
             this.window.off("scroll.ScrollNav").on("scroll.ScrollNav", function () {
 
@@ -78,21 +78,21 @@
 
             });
 
-            //Ä¬ÈÏÖ´ĞĞÒ»´Î»¬¶¯ÊÂ¼ş
+            //é»˜è®¤æ‰§è¡Œä¸€æ¬¡æ»‘åŠ¨äº‹ä»¶
             this.window.trigger('scroll.ScrollNav');
 
         }
 
     };
 
-    //Ä¬ÈÏÅäÖÃ²ÎÊı
+    //é»˜è®¤é…ç½®å‚æ•°
     ScrollNav.DEFAULTS = {
-        animateTime:200 //¶¯»­ÔË¶¯Ê±¼ä
+        animateTime:200 //åŠ¨ç”»è¿åŠ¨æ—¶é—´
     };
 
 
     /**
-     * ²å¼şµÄÆô¶¯Èë¿Ú
+     * æ’ä»¶çš„å¯åŠ¨å…¥å£
      * @param option
      * @returns {*}
      */

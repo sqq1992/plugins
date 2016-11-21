@@ -1,41 +1,41 @@
 
 window.onload = function () {
 
-    //¿ªÆôÆÙ²¼Á÷µÄ
+    //å¼€å¯ç€‘å¸ƒæµçš„
     WaterFall.init();
 };
 
 /**
- * ¹ØÓÚjs¿ØÖÆÆÙ²¼Á÷
+ * å…³äºjsæ§åˆ¶ç€‘å¸ƒæµ
  */
 ;
 (function () {
     var WaterFall = function () {
 
-        //ÅäÖÃ»ù±¾ĞÅÏ¢
+        //é…ç½®åŸºæœ¬ä¿¡æ¯
         this._init();
-        //ÅäÖÃº¯ÊıĞÅÏ¢
+        //é…ç½®å‡½æ•°ä¿¡æ¯
         this._initFunc();
     };
     WaterFall.prototype = {
         constructor:WaterFall,
-        //ÅäÖÃ»ù±¾ĞÅÏ¢
+        //é…ç½®åŸºæœ¬ä¿¡æ¯
         _init:function(){
-            this.parent = $("main");        //¸¸½ÚµãµÄmain
-            this.PicBox = getClassName(this.parent,"pic-box");  //ËüclassNameÎªmainµÄ×Ó½Úµã
+            this.parent = $("main");        //çˆ¶èŠ‚ç‚¹çš„main
+            this.PicBox = getClassName(this.parent,"pic-box");  //å®ƒclassNameä¸ºmainçš„å­èŠ‚ç‚¹
         },
-        //ÅäÖÃº¯ÊıĞÅÏ¢
+        //é…ç½®å‡½æ•°ä¿¡æ¯
         _initFunc:function(){
             var _this = this;
-            //²åÈëÆÙ²¼Á÷µÄÍ¼Æ¬
+            //æ’å…¥ç€‘å¸ƒæµçš„å›¾ç‰‡
             this._insertWaterFallPic();
 
-            //¸ù¾İ¹öÂÖ»¬¶¯À´Ìí¼ÓÆÙ²¼Á÷Í¼Æ¬
-            var dataInt={'data':[{'src':'1.jpg'},{'src':'2.jpg'},{'src':'3.jpg'},{'src':'4.jpg'}]}; //Òª°´Ğè¼ÓÔØµÄÍ¼Æ¬
+            //æ ¹æ®æ»šè½®æ»‘åŠ¨æ¥æ·»åŠ ç€‘å¸ƒæµå›¾ç‰‡
+            var dataInt={'data':[{'src':'1.jpg'},{'src':'2.jpg'},{'src':'3.jpg'},{'src':'4.jpg'}]}; //è¦æŒ‰éœ€åŠ è½½çš„å›¾ç‰‡
             var datas = dataInt.data;
             window.onscroll = function () {
                 if(_this._checkScrollPic()){
-                    var documentFra = document.createDocumentFragment();    //´´½¨ÎÄµµËéÆ¬
+                    var documentFra = document.createDocumentFragment();    //åˆ›å»ºæ–‡æ¡£ç¢ç‰‡
                     for(var i= 0,j = datas.length;i<j;i++){
                         var PicBox = document.createElement("div");
                         PicBox.className = "pic-box";
@@ -47,40 +47,40 @@ window.onload = function () {
                         img.src = "img/" + datas[i].src;
                         box.appendChild(img);
                     }
-                    _this.parent.appendChild(documentFra);  //½«ÎÄµµËéÆ¬ÀïµÄdomÈ«²¿·ÅÈë¸¸ÔªËØÖĞ
-                    //ÖØĞÂË¢ĞÂÆÙ²¼Á÷µÄÍ¼Æ¬
-                    _this.PicBox = getClassName(_this.parent,"pic-box");  //ËüclassNameÎªmainµÄ×Ó½Úµã
+                    _this.parent.appendChild(documentFra);  //å°†æ–‡æ¡£ç¢ç‰‡é‡Œçš„domå…¨éƒ¨æ”¾å…¥çˆ¶å…ƒç´ ä¸­
+                    //é‡æ–°åˆ·æ–°ç€‘å¸ƒæµçš„å›¾ç‰‡
+                    _this.PicBox = getClassName(_this.parent,"pic-box");  //å®ƒclassNameä¸ºmainçš„å­èŠ‚ç‚¹
                     _this._insertWaterFallPic();
                 }
             };
         },
-        //²åÈëÆÙ²¼Á÷µÄÍ¼Æ¬
+        //æ’å…¥ç€‘å¸ƒæµçš„å›¾ç‰‡
         _insertWaterFallPic:function(){
-            var windowWidth = document.documentElement.clientWidth; //ÆÁÄ»µÄ¿í¶È
-            var onePicBoxWidth = this.PicBox[0].offsetWidth;        //µ¥¸öÍ¼Æ¬ÇøÓòµÄ¿í¶È
-            var firstRows = Math.floor(windowWidth / onePicBoxWidth);   //1ÅÅÄÜ·Å¶àÉÙ¸öÍ¼Æ¬ÇøÓò
-            this.parent.style.width = firstRows * onePicBoxWidth + "px";    //¸¸½ÚµãµÄ¿í¶È
+            var windowWidth = document.documentElement.clientWidth; //å±å¹•çš„å®½åº¦
+            var onePicBoxWidth = this.PicBox[0].offsetWidth;        //å•ä¸ªå›¾ç‰‡åŒºåŸŸçš„å®½åº¦
+            var firstRows = Math.floor(windowWidth / onePicBoxWidth);   //1æ’èƒ½æ”¾å¤šå°‘ä¸ªå›¾ç‰‡åŒºåŸŸ
+            this.parent.style.width = firstRows * onePicBoxWidth + "px";    //çˆ¶èŠ‚ç‚¹çš„å®½åº¦
 
-            var firstHeightArry = [];   //´æ·ÅµÚÒ»ÁĞÍ¼Æ¬ÇøÓòµÄ¸ß¶È
-            var minHeight = 0;  //Êı×éÖĞ¸ß¶È×îĞ¡µÄ
-            var firstHeightArryIndex = 0;   //µÚÒ»ÁĞÍ¼Æ¬µÄÌØ¶¨ÖµË÷ÒıÖµ
+            var firstHeightArry = [];   //å­˜æ”¾ç¬¬ä¸€åˆ—å›¾ç‰‡åŒºåŸŸçš„é«˜åº¦
+            var minHeight = 0;  //æ•°ç»„ä¸­é«˜åº¦æœ€å°çš„
+            var firstHeightArryIndex = 0;   //ç¬¬ä¸€åˆ—å›¾ç‰‡çš„ç‰¹å®šå€¼ç´¢å¼•å€¼
             //for(var i=0;i<firstRows;i++){
             //    firstHeightArry.push(this.PicBox[i].offsetHeight);
             //}
             for(var i= 0,j = this.PicBox.length;i<j;i++){
-                if(i<firstRows){    //µÚÒ»ĞĞ²åÈë¸÷¸öÍ¼Æ¬µÄÇøÓò
+                if(i<firstRows){    //ç¬¬ä¸€è¡Œæ’å…¥å„ä¸ªå›¾ç‰‡çš„åŒºåŸŸ
                     firstHeightArry.push(this.PicBox[i].offsetHeight);
-                }else{              //µÚÒ»ĞĞÖ®ºó£¬Íù×îĞ¡µÄÍ¼Æ¬¸ß¶ÈÉÏ²åÈëÖ®ºóÍ¼Æ¬£¬
-                    minHeight = Math.min.apply(null, firstHeightArry);  //×îĞ¡¸ß¶È
-                    firstHeightArryIndex = this._searchIndex(firstHeightArry, minHeight);   //×îĞ¡¸ß¶È¶ÔÓ¦µÄË÷Òı
-                    //ÉèÖÃcssÖµ
+                }else{              //ç¬¬ä¸€è¡Œä¹‹åï¼Œå¾€æœ€å°çš„å›¾ç‰‡é«˜åº¦ä¸Šæ’å…¥ä¹‹åå›¾ç‰‡ï¼Œ
+                    minHeight = Math.min.apply(null, firstHeightArry);  //æœ€å°é«˜åº¦
+                    firstHeightArryIndex = this._searchIndex(firstHeightArry, minHeight);   //æœ€å°é«˜åº¦å¯¹åº”çš„ç´¢å¼•
+                    //è®¾ç½®csså€¼
                     this.PicBox[i].style.cssText = "position:absolute;top:" + minHeight + "px;left:" + firstHeightArryIndex * onePicBoxWidth + "px";
-                    //ÔÚÔ­À´µÄÊı×éÄÚÔÚ¼ÓÉÏĞÂ²åÈëÍ¼Æ¬ÇøÓòµÄ¸ß¶È
+                    //åœ¨åŸæ¥çš„æ•°ç»„å†…åœ¨åŠ ä¸Šæ–°æ’å…¥å›¾ç‰‡åŒºåŸŸçš„é«˜åº¦
                     firstHeightArry[firstHeightArryIndex] += this.PicBox[i].offsetHeight;
                 }
             }
         },
-        //Ñ°ÕÒ³öÄ³¸öÖµÔÚÊı×éÖĞµÄË÷Òı
+        //å¯»æ‰¾å‡ºæŸä¸ªå€¼åœ¨æ•°ç»„ä¸­çš„ç´¢å¼•
         _searchIndex:function(arry,val){
             for(var i in arry){
                 if(val ==arry[i]){
@@ -88,44 +88,44 @@ window.onload = function () {
                 }
             }
         },
-        //Æ¥Åä¹öÂÖ¹ö¶¯Ê±£¬ÊÇ·ñ°´Ğè¼ÓÔØÍ¼Æ¬µÄÌõ¼ş
+        //åŒ¹é…æ»šè½®æ»šåŠ¨æ—¶ï¼Œæ˜¯å¦æŒ‰éœ€åŠ è½½å›¾ç‰‡çš„æ¡ä»¶
         _checkScrollPic:function(){
-            var lastPicBox = this.PicBox[this.PicBox.length - 1];               //×îºóÒ»¸öÍ¼Æ¬
-            var picBoxTopHeight = lastPicBox.offsetTop+Math.floor(lastPicBox.offsetHeight/2);  //×îºóÒ»¸öÍ¼Æ¬¾àÀë¶¥²¿µÄ¾àÀë¼ÓÉÏËü×ÔÉíÒ»°ëµÄ¸ß¶È
-            var srcollTop = document.documentElement.scrollTop || document.body.scrollTop;  //¹öÂÖ»¬¶¯µÄ¸ß¶È
+            var lastPicBox = this.PicBox[this.PicBox.length - 1];               //æœ€åä¸€ä¸ªå›¾ç‰‡
+            var picBoxTopHeight = lastPicBox.offsetTop+Math.floor(lastPicBox.offsetHeight/2);  //æœ€åä¸€ä¸ªå›¾ç‰‡è·ç¦»é¡¶éƒ¨çš„è·ç¦»åŠ ä¸Šå®ƒè‡ªèº«ä¸€åŠçš„é«˜åº¦
+            var srcollTop = document.documentElement.scrollTop || document.body.scrollTop;  //æ»šè½®æ»‘åŠ¨çš„é«˜åº¦
             var winddowHeight = document.documentElement.clientHeight;
-            return (picBoxTopHeight < (srcollTop + winddowHeight)) ? true : false;  //Èç¹ûÍ¼Æ¬µ½¶¥²¿¾àÀë¼ÓÉÏËü×ÔÉíµÄÒ»°ë¸ß¶ÈĞ¡ÓÚ¹öÂÖµÄ»¬¶¯ºÍÒ³Ãæ¸ß¶ÈÖ®ºóÊÇ,·µ»Øtrue
+            return (picBoxTopHeight < (srcollTop + winddowHeight)) ? true : false;  //å¦‚æœå›¾ç‰‡åˆ°é¡¶éƒ¨è·ç¦»åŠ ä¸Šå®ƒè‡ªèº«çš„ä¸€åŠé«˜åº¦å°äºæ»šè½®çš„æ»‘åŠ¨å’Œé¡µé¢é«˜åº¦ä¹‹åæ˜¯,è¿”å›true
         }
 
     };
 
-    //Æô¶¯º¯Êı
+    //å¯åŠ¨å‡½æ•°
     WaterFall.init = function () {
         return new this();
     };
 
-    //Íâ²¿½Ó¿Ú
+    //å¤–éƒ¨æ¥å£
     window['WaterFall'] = WaterFall;
 
 })();
 
 /**
- * ´ÓidÉÏÑ°ÕÒ½Úµã
- * @param id    ´«ÈëµÄidÃû
- * @returns {Element}   Ñ°ÕÒµ½µÄid½Úµã
+ * ä»idä¸Šå¯»æ‰¾èŠ‚ç‚¹
+ * @param id    ä¼ å…¥çš„idå
+ * @returns {Element}   å¯»æ‰¾åˆ°çš„idèŠ‚ç‚¹
  */
 function $(id){
     return document.getElementById(id);
 }
 
 /**
- * ¹ØÓÚÑ°ÕÒÆ¥ÅäµÄclassNameµÄ½Úµã
- * @param node  ËüµÄ¸¸½Úµã
- * @param clsName  ËüËùÆ¥ÅäµÄclassNameµÄ×Ó½Úµã
+ * å…³äºå¯»æ‰¾åŒ¹é…çš„classNameçš„èŠ‚ç‚¹
+ * @param node  å®ƒçš„çˆ¶èŠ‚ç‚¹
+ * @param clsName  å®ƒæ‰€åŒ¹é…çš„classNameçš„å­èŠ‚ç‚¹
  */
 function getClassName(node,clsName){
     var newArry = [];
-    var parent = node ? node : document;    //Èç¹ûÓĞ¸¸½Úµã,Ôò´Ó¸¸½Úµã¿ªÊ¼²é£¬·ñÔò´Ódocument¿ªÊ¼²é
+    var parent = node ? node : document;    //å¦‚æœæœ‰çˆ¶èŠ‚ç‚¹,åˆ™ä»çˆ¶èŠ‚ç‚¹å¼€å§‹æŸ¥ï¼Œå¦åˆ™ä»documentå¼€å§‹æŸ¥
     var allElement = parent.getElementsByTagName("*");
     var regClassName = new RegExp('(\\s|^)'+clsName+'(\\s|$)');
     for(var i= 0,j = allElement.length;i<j;i++){

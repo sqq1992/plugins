@@ -215,8 +215,6 @@
         };
 
         return TimeLine;
-
-
     })();
 
 

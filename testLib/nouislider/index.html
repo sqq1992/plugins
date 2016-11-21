@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="nouislider.min.css">
+</head>
+<body>
+
+
+
+<h1>LakoTuts</h1>
+<div class="sliders" style="width: 200px;margin: 0 auto">
+    <div id="slider-range-min"></div>
+    <div>我的天啊</div>
+    <div id="slider-range-min2"></div>
+</div>
+
+<script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="nouislider.min.js"></script>
+<script>
+
+
+    $(function() {
+
+        var test1 = document.getElementById('slider-range-min');
+        var test2 = document.getElementById('slider-range-min2');
+
+        noUiSlider.create(test1, {
+            start: [20, 80],
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 100
+            }
+        });
+
+        noUiSlider.create(test2, {
+            start: 100,
+            connect: 'lower',
+            animate: true,
+            handles:2,
+            step: 1,
+            range: {
+                'min': 1,
+                'max': 200
+            },
+            pips: {
+                mode: 'values',
+                values: [1, 100, 200],
+                density: 100
+            }
+        });
+
+
+    });
+
+
+</script>
+
+</body>
+</html>
