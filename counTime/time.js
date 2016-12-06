@@ -162,6 +162,9 @@ window.onload = function () {
         CurrentMinute = parseInt(DiffTime / 1000 / 60 % 60, 10),
         CurrentSeconds =  parseInt(DiffTime / 1000 % 60, 10);
 
+    var ClientWidth = document.body.clientWidth,
+        ClientHeight = document.documentElement.clientHeight;
+
     //主函数
     var Time = function (options) {
         this.options = options;
@@ -181,13 +184,23 @@ window.onload = function () {
             var _this = this;
             this.canvas = document.getElementById(this.options.id);
             this.cxt = this.canvas.getContext("2d");
-            this.canvasWidth = this.canvas.width;
-            this.canvasHeight = this.canvas.height;
+
+            this._initPos();
+
             //进行倒计时
             this.counTimer = setInterval(function () {
                 _this._getDiffTime();
             }, 50);
 
+        },
+
+        //初始化canvas的默认位置和宽高
+        _initPos:function(){
+            this.canvas.width = ClientWidth;
+            this.canvas.height = ClientHeight;
+
+            Left = Math.round(ClientWidth / 10);
+            Radius = Math.round((ClientWidth * 4 / 5 / 108))-1;
         },
 
         //倒计时
@@ -200,7 +213,7 @@ window.onload = function () {
             var seconds = parseInt(diffTime / 1000 % 60, 10);
 
             if(diffTime>=0){
-                cxt.clearRect(0, 0, 1620, 700);
+                cxt.clearRect(0, 0, ClientWidth, ClientHeight);
                 //小时的十分位
                 this._drawArc({
                     index: parseInt(hour / 10,10),
@@ -228,7 +241,6 @@ window.onload = function () {
                         left:Left+15*(Radius+1),
                         top:Top
                     });
-                    CurrentHour = hour;
                 }
 
                 //冒号
@@ -358,8 +370,8 @@ window.onload = function () {
                 ball.x += ball.vx;
                 ball.y += ball.vy;
                 ball.vy += ball.g;
-                if(ball.y>=(this.canvasHeight-Radius)){
-                    ball.y = this.canvasHeight - Radius;
+                if(ball.y>=(ClientHeight-Radius)){
+                    ball.y = ClientHeight - Radius;
                     ball.vy = -ball.vy * 0.75;
                 }
 
@@ -367,7 +379,14 @@ window.onload = function () {
                 cxt.closePath();
                 cxt.fill();
 
+                //清除已经消失的小球
+                if(ball.x<=(-Radius) || ball.x>=(ClientWidth+Radius)){
+                    Balls.splice(i, 1);
+                    i--;
+                    j = Balls.length;
+                }
             }
+
         },
 
         /**
