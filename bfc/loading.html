@@ -26,6 +26,42 @@
     <div class="circle"></div>
 
 
+<script>
+
+
+    function sort(arry){
+        var temp;
+
+        for(var i= 0,j=arry.length;i<j;i++){
+
+            var k = i;
+            for(var m=i+ 1,n=arry.length;m<n;m++){
+
+                if(arry[i]>arry[m]){
+                    k = m;
+                }
+
+            }
+
+            if(k!==i){
+                temp = arry[k];
+                arry[k] = arry[i];
+                arry[i] = temp;
+            }
+
+        }
+
+        console.log(arry);
+    }
+
+
+    var aa = [1, 9, 3, 2, 7, 4, 0];
+
+    sort(aa);
+
+
+</script>
+
 
 </body>
 </html>
