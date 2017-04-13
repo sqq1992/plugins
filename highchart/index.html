@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>滚动监听</title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+
+</head>
+<body>
+
+
+<div id="container" style="width:400px;height:400px;"></div>
+
+
+<script src="https://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+<script src="https://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+
+<script>
+    $(function () {
+        var chart = null;
+        // create the chart
+        $('#container').highcharts({
+            chart: {
+                events: {
+                    selection: function (event) {
+                        var min = event.xAxis[0].min;
+                        var max = event.xAxis[0].max;
+                        chart.xAxis[0].setExtremes(Math.ceil(min), Math.ceil(max));
+                        return false;
+                    }
+                },
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Chart selection demo'
+            },
+            subtitle: {
+                text: 'Click and drag the plot area to draw a selection'
+            },
+            series: [{
+                type: 'column',
+                data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+            }, {
+                data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4].reverse()
+            }]
+        },function(c){
+            chart = c;
+        });
+
+        chart.xAxis[0].setExtremes(Math.ceil(0), Math.ceil(5));
+        chart.yAxis[0].setExtremes(Math.ceil(0), Math.ceil(200));
+
+    });
+</script>
+
+</body>
+</html>
