@@ -1,112 +1,94 @@
-/**
- * 下拉菜单的显示与隐藏的插件
- */
-;
-(function ($) {
 
-    //当前点击的元素
-    var activeNode = null;
 
-    var Dropdown = function (element,options) {
-        this.element = element;
+;(function($){
+
+    var Fixed = function (element, options) {
+        this.parent = element;
         this.options = options;
-        this.isShown = false;
+
+        //初始化
+        this.init();
     };
 
-    //显示
-    Dropdown.prototype.show = function () {
-        var _this = this;
-        if(this.isShown) return ;
-        this.isShown = true;
+    Fixed.prototype = {
+        constructor:Fixed,
 
-        //显示的回调事件
-        var e = $.Event("show.newDropdown");
-        this.element.trigger(e);
+        //初始化节点和函数
+        init:function(){
 
-        //当前激活按钮取消激活
-        this.element
-            .show()
-            .on("click.dismiss.newDropdown",'[data-dismiss="newDropdown"]', $.proxy(this.hide,this)); //绑定取消弹窗按钮
+            this._initNode();
+            this._initEvent();
+        },
 
+        //初始化节点信息
+        _initNode:function(){
+            this.window = $(window);
+            this.offsetTop = this.parent.offset().top;
+            console.log(this.parent.offset().top);
 
-    };
+        },
 
-    //隐藏
-    Dropdown.prototype.hide = function () {
-        if(!this.isShown) return;
-        this.isShown = false;
+        //初始化函数信息
+        _initEvent:function(){
+            var _this = this,
+                options = this.options;
 
-        //显示的回调事件
-        var e = $.Event("hide.newDropdown");
-
-        this.element.off("click.dismiss.newDropdown");
-
-        this.element.trigger(e);
-        this.element.hide();
-
-    };
+            var timer = null;
 
 
-    Dropdown.DEFAULTS = {
-        show:true   //点击会显示下拉框
-    };
+            /**
+             * 执行导航栏的滑动事件
+             */
+            this.window.off("scroll.Fixed").on("scroll.Fixed", function () {
 
-    /**
-     * 插件的实列入口
-     * @param options   传入的配置参数
-     * @returns {*}
-     */
-    $.fn.newDropdown = function (option) {
-        return this.each(function () {
-            var $this = $(this);
-            var options = $.extend({}, Dropdown.DEFAULTS, typeof option === "object" && option);
+                //clearTimeout(timer);
 
-            var data = $this.data("bs.newDropdown");
-            if(!data) $this.data("bs.newDropdown", data = new Dropdown($this, options));
+                //timer = setTimeout(function () {
+                    var scrollTop = $(this).scrollTop();
+                    if(scrollTop>=_this.offsetTop){
+                        _this.parent.css({
+                            position:'fixed',
+                            top:0
+                        });
+                    }else{
+                        _this.parent.css({
+                            position:'absolute',
+                            top:_this.offsetTop
+                        });
+                    }
+                //},10);
 
-            if(typeof option==="string"){   //传入普通字符串对插件进行引用
-                data[option]();
-            }else if(options.show){         //传入配置参数对插件进行调节
-                data.show();
-            }
+            });
 
-        });
-    };
+            //默认执行一次滑动事件
+            this.window.trigger('scroll.Fixed');
 
-
-    var toggle   = '[data-toggle=newDropdown]'
-    function clearMenus(e){
-        var target = e.target;
-        var tpggle = $(toggle);
-        console.log("clear");
-        tpggle.each(function () {
-            var next = $(this).next("dropdown-menu");
-            next.hide();
-        });
-
-    }
-
-    $(document).on("click.bs.newDropdown.data-api",clearMenus);         //清楚所有下拉显示框
-    $(document).on('click.bs.newDropdown.data-api', '[data-toggle="newDropdown"]', function (e) {
-        var $this = $(this);
-        activeNode = $this;
-        var target = $($this.attr("data-target"));  //获取目标节点
-        var option = target.data();                //获取配置参数
-
-        //阻止默认事件
-        e.preventDefault();
-
-        console.log(111);
-        //如果当前的节点是激活状态，则直接返回,否则增加active，且插件实列化
-        if($this.hasClass("active")){
-            return;
-        }else{
-            $this.addClass("active");
         }
 
-        //实列化插件
-        target.newDropdown(option);
+    };
 
-    });
+    //默认配置参数
+    Fixed.DEFAULTS = {
+        animateTime:200 //动画运动时间
+    };
 
-})(jQuery);
+
+    /**
+     * 插件的启动入口
+     * @param option
+     * @returns {*}
+     */
+    $.fn.Fixed = function (option) {
+
+        return this.each(function () {
+            var $this = $(this),
+                options = $.extend({},Fixed.DEFAULTS,typeof option==='object' && option);
+
+            var data = $this.data("bs.fixed");
+            if(!data) $this.data('bs.fixed', data = new Fixed($this, options));
+
+        });
+
+    };
+
+})(jQuery)
