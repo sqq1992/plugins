@@ -1,0 +1,29 @@
+
+<script>
+
+    //单列模式
+
+    var singleton = function(name){
+        this.name = name;
+        this.instanace = null;
+
+        //test
+        this.test = "sun1992";
+    };
+
+    singleton.getInstance = function (name) {
+        if(!this.instanace){
+            this.instanace = new singleton(name);
+        }
+
+        return this.instanace;
+    };
+
+//    var a = singleton.getInstance("sun1");
+//    var b = singleton.getInstance("sun2");
+//    console.log(a);
+//    console.log(b);
+
+
+
+</script>

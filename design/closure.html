@@ -1,0 +1,45 @@
+
+<script>
+
+
+    //1 闭包计算迭代
+    var mult = (function () {
+        var cache = {};
+
+        var calculate = function () {
+            var args = Array.prototype.join.call(arguments, ',');
+
+            if(args in cache){
+                return cache[args];
+            }
+
+            var a = 1;
+            for(var i= 0,j=arguments.length;i<j;i++){
+                a = a * arguments[i];
+            }
+
+            return cache[args]=a;
+        };
+
+        return function(){
+
+            var args = Array.prototype.join.call(arguments, ',');
+            if(args in cache){
+                return cache[args];
+            }
+
+            return cache[args] = calculate.apply(null, arguments);
+
+        }
+
+    })();
+//    console.log(mult(3, 4, 5));
+
+    //2存放img
+    var report = function(src){
+        var img = new Image();
+        img.src = src;
+    };
+    report('http://s2.mogucdn.com/mlcdn/c45406/170505_0681d27j66bjcagj1dd0jda82ab41_778x440.jpg_900x9999.v1c7E.70.webp');
+
+</script>

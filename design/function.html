@@ -1,0 +1,80 @@
+
+<script>
+
+    //1
+//    var a = [1, 16, 3, 5];
+//    a.sort(function (a, b) {
+//        return a - b;
+//    });
+//    console.log(a);
+
+    //2
+//    var isType = function (type) {
+//
+//        return function (obj) {
+//
+//            return Object.prototype.toString.call(obj) === '[object ' + type + ']';
+//
+//        }
+//
+//    };
+//    var isArry = isType('Array');
+//    console.log(isArry([1, 2]));
+
+    //3
+//    var cost = (function () {
+//        var args = [];
+//
+//        return function () {
+//            if(arguments.length===0){
+//                var total = 0;
+//                for(var i= 0,j=args.length;i<j;i++){
+//                    total += args[i];
+//                }
+//                return total;
+//            }else{
+//                [].push.apply(args, arguments);
+//            }
+//        }
+//
+//    })();
+//
+//    cost(300);
+//    cost(300);
+//    cost(400);
+//    var a = cost();
+//    console.log(a);
+
+    //4
+    var curring = function (fn) {
+        var args = [];
+
+        return function(){
+            if(arguments.length===0){
+                return fn.apply(this, args);
+            }else{
+                [].push.apply(args, arguments);
+            }
+        }
+    };
+    var cost = (function () {
+        var money = 0;
+
+        return function(){
+            for(var i= 0,j=arguments.length;i<j;i++){
+                money += arguments[i];
+            }
+            return money;
+        }
+    })();
+
+    var cost = curring(cost);
+    cost(300);
+    cost(300);
+    cost(400);
+    var a = cost();
+    console.log(a);
+
+
+
+</script>

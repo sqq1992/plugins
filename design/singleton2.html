@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+</head>
+<body>
+
+    <button type="button" class="btn btn-danger" id="add">增加iframe</button>
+
+<script>
+
+    //transparent one instance
+//    var creativeDiv = (function () {
+//
+//        var instance;
+//
+//        var CreativeDiv = function (html) {
+//            if(instance){
+//                return instance;
+//            }
+//            this.html = html;
+//            this.init();
+//            return instance = this;
+//        };
+//
+//        CreativeDiv.prototype.init = function () {
+//            var div = document.createElement('div');
+//            div.innerHTML = this.html;
+//            document.body.appendChild(div);
+//        };
+//
+//        return CreativeDiv;
+//
+//    })();
+//
+//    var a = new creativeDiv("111");
+//    var b = new creativeDiv("222");
+//    alert(a === b);
+
+    //proxy one instance
+
+//    var CreativeDiv = function (html) {
+//        this.html = html;
+//        this.init();
+//    };
+//
+//    CreativeDiv.prototype.init = function () {
+//        var div = document.createElement('div');
+//        div.innerHTML = this.html;
+//        document.body.appendChild(div);
+//    };
+//
+//
+//
+//    var proxy = (function () {
+//
+//        var instance;
+//        return function (html) {
+//            if(!instance){
+//                instance = new CreativeDiv(html);
+//            }
+//
+//            return instance;
+//        };
+//
+//    })();
+//
+//    var a = new proxy("111");
+//    var b = new proxy("222");
+//    alert(a === b);
+
+    //lazy single
+    var getSingle = function (fn) {
+        var result;
+        return function(){
+            return result || (result = fn.apply(this, arguments));
+        }
+    };
+
+    var creativeLayer = function () {
+        var iframe = document.createElement("iframe");
+        document.body.appendChild(iframe);
+        return iframe;
+    };
+
+    var creativeSingleIframe = getSingle(creativeLayer);
+
+    var add = document.getElementById("add");
+    add.onclick = function () {
+        var iframe = creativeSingleIframe();
+        iframe.style.display = "none";
+    };
+
+
+
+</script>
+</body>
+</html>

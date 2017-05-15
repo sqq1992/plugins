@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>侧边栏的滑出</title>
+    <link rel="stylesheet" href="../bootstrap.css" />
+</head>
+<body>
+
+
+<button type="button" class="btn btn-primary pull-right" data-toggle="slider" data-target="#mySlider" id="div1">点击弹出则边栏</button>
+
+<script>
+
+//    var getId = document.getElementById;
+//    getId("div1");
+
+    document.getElementById = (function(func){
+
+        return function () {
+            return func.apply(document, arguments);
+        };
+
+    })(document.getElementById);
+
+var d1 = document.getElementById("div1");
+console.log(d1);
+
+
+</script>
+
+<script>
+
+    var myObj1 = function () {
+        this.name = "sun1992";
+        return {
+            name:"xuwei"
+        };
+    };
+    var a1 = new myObj1();
+    console.log(a1.name);
+
+
+    var myobj2 = function () {
+        this.name = "sun1992";
+        return "xuwei";
+    };
+    var a2 = new myobj2();
+    console.log(a2.name);
+
+
+</script>
+</body>
+</html>
