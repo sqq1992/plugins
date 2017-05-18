@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组合模式(引用父对象)</title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+</head>
+<body>
+
+    <button id="bt1" type="button" class="btn btn-danger">点击按钮1</button>
+    <button id="bt2" type="button" class="btn btn-danger">点击按钮2</button>
+    <button id="bt3" type="button" class="btn btn-danger">点击按钮3</button>
+    <button id="replay" type="button" class="btn btn-danger">Replay</button>
+
+<script>
+
+    var Floder = function(name){
+        this.name = name;
+        this.parent = null;
+        this.files = [];
+    }
+
+    Floder.prototype.add = function (file) {
+        file.parent = this;
+        this.files.push(file);
+    };
+
+    Floder.prototype.scan = function(){
+        console.log("开始扫描文件" + this.name);
+        for(var i= 0,file,files = this.files;file = files[i++];){
+            file.scan();
+        }
+    }
+
+    Floder.prototype.remove = function () {
+        if(!this.parent) return;
+
+        for(var files = this.parent.files,l=files.length-1;l>=0;l--){
+            var file = files[l];
+            if(file === this){
+                files.splice(l, 1);
+            }
+        }
+
+    };
+
+    var file = function (name) {
+        this.name = name;
+        this.parent = null;
+    };
+    file.prototype.add = function () {
+        throw new Error("叶子没子节点");
+    };
+    file.prototype.scan = function(){
+        console.log("开始扫描文件" + this.name);
+    };
+    file.prototype.remove = function () {
+        if(!this.parent) return;
+
+        for(var files = this.parent.files,l=files.length-1;l>=0;l--){
+            var file = files[l];
+            if(file === this){
+                files.splice(l, 1);
+            }
+        }
+    };
+
+
+    //test
+    var floder = new Floder("学习资料");
+    var floder1 = new Floder("javascript");
+    var floder2 = new Floder("java");
+
+    floder.add(floder1);
+    floder.add(floder2);
+    floder1.remove();
+    floder.scan();
+
+</script>
+</body>
+</html>

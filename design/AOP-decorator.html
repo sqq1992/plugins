@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AOP-装饰者模式</title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+</head>
+<body>
+
+    <button id="bt1" type="button" class="btn btn-danger">点击按钮1</button>
+    <button id="bt2" type="button" class="btn btn-danger">点击按钮2</button>
+    <button id="bt3" type="button" class="btn btn-danger">点击按钮3</button>
+    <button id="replay" type="button" class="btn btn-danger">Replay</button>
+
+<script>
+
+    //1
+    Function.prototype.before = function (beforeFn) {
+        var _this = this;
+
+        return function(){
+            beforeFn.apply(this, arguments);
+
+            return _this.apply(this, arguments);
+        }
+
+    };
+
+    Function.prototype.after = function (afterFb) {
+        var _this = this;
+        return function(){
+            var ret = _this.apply(this, arguments);
+            afterFb.apply(this, arguments);
+            return ret;
+        }
+    };
+
+    //1 test
+//    document.getElementById = document.getElementById.before(function () {
+//        alert(333);
+//    });
+//    document.getElementById = document.getElementById.after(function () {
+//        alert(666);
+//    });
+//    var bt1 = document.getElementById("bt1");
+//    console.log(bt1);
+
+    //2
+    var beforefn = function(fn,befoefn){
+        return function(){
+            befoefn.apply(this, arguments);
+            return fn.apply(this, arguments);
+        }
+    }
+
+    var fn = beforefn(function () {
+        alert(222);
+    }, function () {
+        alert(111);
+    });
+//    fn();
+
+    //3
+    var fnc = function (parm) {
+        console.log(parm);
+    };
+    fnc = fnc.before(function (parm) {
+        parm.b = "b";
+    });
+    fnc({a: "a"});
+
+
+</script>
+</body>
+</html>

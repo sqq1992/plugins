@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+</head>
+<body>
+
+    <button id="bt1" type="button" class="btn btn-danger">点击按钮1</button>
+    <button id="bt2" type="button" class="btn btn-danger">点击按钮2</button>
+    <button id="bt3" type="button" class="btn btn-danger">点击按钮3</button>
+
+<script>
+
+    var bt1 = document.getElementById("bt1");
+    var bt2 = document.getElementById("bt2");
+    var bt3 = document.getElementById("bt3");
+
+    //设置命令
+    var setCommand = function (button, command) {
+        button.onclick = function () {
+            command.execute();
+        };
+    };
+
+    var menu = {
+        refresh:function(){
+            console.log("刷新页面");
+        },
+        add:function(){
+            console.log("增加");
+        },
+        del:function(){
+            console.log("删除");
+        }
+    };
+
+    var refreshCommand = function (reciver) {
+        this.reciver = reciver;
+    };
+    refreshCommand.prototype.execute = function () {
+        this.reciver.refresh();
+    };
+
+    var addCommand = function (reciver) {
+        this.reciver = reciver;
+    };
+    addCommand.prototype.execute = function () {
+        this.reciver.add();
+    };
+
+    var refresh = new refreshCommand(menu);
+    var add = new addCommand(menu);
+
+    setCommand(bt1, refresh);
+    setCommand(bt2, add);
+
+
+
+</script>
+</body>
+</html>
