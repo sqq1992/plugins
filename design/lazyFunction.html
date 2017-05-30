@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>惰性加载函数</title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+</head>
+<body>
+
+    <button type="button" class="btn btn-primary" id="test">点我啊!</button>
+    <button type="button" class="btn btn-primary" id="test1">点我啊!</button>
+
+<script>
+
+    var addEvent = function (elem, type, fn) {
+
+        if(window.addEventListener){
+            addEvent = function (elem,type,fn) {
+                elem.addEventListener(type, fn, false);
+            };
+        }else if(window.attachEvent){
+            addEvent = function (elem,type,fn) {
+                elem.attachEvent("on" + type, fn);
+            };
+        }
+
+        addEvent(elem, type, fn);
+    };
+
+    addEvent(document.getElementById("test"), "click", function () {
+        alert("test");
+    });
+
+    addEvent(document.getElementById("test1"), "click", function () {
+        alert("test1");
+    });
+
+
+</script>
+</body>
+</html>
