@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>科里化函数</title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+</head>
+<body>
+
+
+
+<script>
+
+    Function.prototype.uncurring = function () {
+        var _this = this;
+
+        return function(){
+            var obj = Array.prototype.shift.call(arguments);
+            return _this.apply(obj, arguments);
+        }
+
+    };
+
+
+    var push = Array.prototype.push.uncurring();
+
+    ;(function(){
+
+//        push(arguments, 4);
+//        console.log(arguments);
+
+    })(1,2,3)
+
+    var a = {
+        a: 1,
+        b: 2
+    };
+    push(a, 3);
+    console.log(a);
+
+
+
+</script>
+</body>
+</html>

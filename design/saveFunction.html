@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>函数节流</title>
+    <link rel="stylesheet" href="../bootstrap.css"/>
+</head>
+<body>
+
+
+
+<script>
+
+    //1
+    var throttle = function (fn,interval) {
+        var timer = null,
+            firstRead = true;
+
+        return function(){
+            var _this = this;
+            var args = arguments;
+
+            if(firstRead){
+                fn.apply(_this, args);
+                return firstRead = false;
+            }
+
+            if(timer)return;
+
+            timer = setTimeout(function () {
+                clearTimeout(timer);
+                timer = null;
+                fn.apply(_this, args);
+
+            }, interval || 500);
+
+        }
+    };
+
+    window.onresize = throttle(function () {
+        console.log(333);
+    }, 300);
+
+    //2 split time function
+    var timeChunk = function (arry, fn, count) {
+
+        var t;
+
+        var start = function () {
+            var obj;
+            for(var i=0;i<(Math.min(count,arry.length));i++){
+                obj = arry.shift();
+                fn(obj);
+            }
+        };
+
+        return function(){
+
+            t = setInterval(function () {
+                if(arry.length===0){
+                    clearInterval(t);
+                }
+                start();
+            }, 500);
+        }
+
+    };
+
+
+    var arry = [];
+    for(var i= 0;i<1000;i++){
+        arry.push(i);
+    }
+
+    var addNode = function (n) {
+        var div = document.createElement("div");
+        div.innerHTML = n;
+        document.body.appendChild(div);
+    };
+
+    var test = timeChunk(arry, addNode, 8);
+    test();
+
+
+</script>
+</body>
+</html>
