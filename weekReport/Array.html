@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Arry的bug</title>
+</head>
+<body>
+
+
+<script>
+
+    //1.use "length" property to clean up Array
+    var a = b = [1, 2, 3];
+
+    //that could not reset Array but only create a new Array
+//    a = [];
+//    console.log(b);
+
+    //useing length = 0, could clean Array
+    a.length = 0;
+    console.log(b);
+
+</script>
+</body>
+</html>

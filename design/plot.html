@@ -1,0 +1,56 @@
+
+<script>
+
+    //1.plot model
+    var S1 = function(){};
+    S1.prototype.calculate = function (salary) {
+        return salary * 4;
+    };
+
+    var S2 = function(){};
+    S2.prototype.calculate = function (salary) {
+        return salary * 3;
+    };
+
+    var Bonous = function () {
+        this.salary = null;
+        this.strategy = null;
+    };
+
+    Bonous.prototype.setSalary = function (salary) {
+        this.salary = salary;
+    };
+    Bonous.prototype.setStrategy = function (strategy) {
+        this.strategy = strategy;
+    };
+    Bonous.prototype.getBonous = function () {
+        return this.strategy.calculate(this.salary);
+    };
+
+    var bonous = new Bonous();
+    bonous.setSalary(1000);
+    bonous.setStrategy(new S1());
+    console.log(bonous.getBonous());
+
+
+    bonous.setSalary(1000);
+    bonous.setStrategy(new S2());
+    console.log(bonous.getBonous());
+
+    //2 strategy model
+    var strategies = {
+      a:function(salary){
+          return salary * 1;
+      },
+      b:function(salary){
+            return salary * 2;
+      }
+    };
+    var calculateBonous = function (type, salary) {
+        return strategies[type](salary);
+    };
+    console.log(calculateBonous("a", 2000));
+    console.log(calculateBonous("b", 2000));
+
+
+</script>
