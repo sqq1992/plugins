@@ -52,13 +52,21 @@
     var Validator = function () {
         this.cache = [];
     };
-    Validator.prototype.add = function (obj) {
+    Validator.prototype.add = function (value,rules) {
+        var _this = this;
+        for(var i= 0,rule;rule=rules[i++];){
+            (function (rule) {
+                rule.val = value;
+                _this.cache.push(function () {
 
-        this.cache.push(function () {
+                    return strategies[rule.type](rule);
 
-            return strategies[obj.type](obj);
+                });
 
-        });
+            })(rule);
+        }
+
+
 
     };
     Validator.prototype.start = function () {
@@ -75,23 +83,27 @@
     var validateFunc = function () {
         var validator = new Validator();
 
-        validator.add({
-            type:"isNotEmpty",
-            val:document.getElementById("userNmae").value,
-            errorMessage:"用户名不得为空"
-        });
+        validator.add(document.getElementById("userNmae").value,[
+            {
+                type:"isNotEmpty",
+                errorMessage:"用户名不得为空"
+            },
+            {
+                type:"minLength",
+                minLength:6,
+                errorMessage:"用户名长度不得大于6"
+            },
+        ]);
 
-        validator.add({
+        validator.add(document.getElementById("password").value,[{
             type:"minLength",
             minLength:6,
-            val:document.getElementById("password").value,
             errorMessage:"密码长度不得大于6"
-        });
+        }]);
 
-        validator.add({
-            type:"isPhone",
-            val:document.getElementById("phone").value
-        });
+        validator.add(document.getElementById("phone").value,[{
+            type:"isPhone"
+        }]);
 
         var errormsg = validator.start();
         return errormsg;
