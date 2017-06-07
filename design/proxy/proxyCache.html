@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>缓存代理</title>
+    <link rel="stylesheet" href="../../bootstrap.css"/>
+</head>
+<body>
+
+    <button id="bt1" type="button" class="btn btn-danger">点击按钮1</button>
+    <button id="bt2" type="button" class="btn btn-danger">点击按钮2</button>
+    <button id="bt3" type="button" class="btn btn-danger">点击按钮3</button>
+
+<script>
+
+    //1
+    //calculate function
+    var mutly = function () {
+        console.log("开始计算");
+        var a = 1;
+        for(var i= 0,j=arguments.length;i<j;i++){
+
+            a = a * arguments[i];
+
+        }
+        return a;
+
+    };
+
+    //cache proxy
+    var proxyMult = (function () {
+        var cache = {};
+
+        return function () {
+            var args = Array.prototype.join.call(arguments, ",");
+
+            if(args in cache){
+                return cache[args];
+            }
+
+            return cache[args] = mutly.apply(this, arguments);
+        };
+
+
+    })();
+
+//    console.log(proxyMult(1, 2, 3, 4));
+//    console.log(proxyMult(1, 2, 3, 4));
+
+
+    //2-------------------------------------------
+
+    //calculate function
+    var mult = function () {
+        var a = 1;
+        for(var i= 0,j=arguments.length;i<j;i++){
+            a = a * arguments[i];
+        }
+        return a;
+    };
+    var plus = function () {
+        var a = 0;
+        for(var i= 0,j=arguments.length;i<j;i++){
+            a = a + arguments[i];
+        }
+        return a;
+    };
+
+    //proxy
+    var createProxy = function (fn) {
+        var cache = {};
+
+        return function(){
+            var args = Array.prototype.join.call(arguments, ',');
+            if(args in cache){
+                return cache[args];
+            }
+
+            return cache[args] = fn.apply(this, arguments);
+        }
+
+    };
+
+    var proxyMult = createProxy(mult),
+        proxyPlus = createProxy(plus);
+
+    console.log(proxyMult(1, 2, 3, 4));
+    console.log(proxyPlus(1, 2, 3, 4));
+
+</script>
+</body>
+</html>

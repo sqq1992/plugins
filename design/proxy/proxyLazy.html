@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>虚拟代理在惰性加载中的应用</title>
+    <link rel="stylesheet" href="../../bootstrap.css"/>
+</head>
+<body>
+
+    <button id="bt1" type="button" class="btn btn-danger">点击按钮1</button>
+    <button id="bt2" type="button" class="btn btn-danger">点击按钮2</button>
+    <button id="bt3" type="button" class="btn btn-danger">点击按钮3</button>
+
+<script>
+
+    //1
+    var $ = (function(){
+        var cache = [];
+        var handle = function (ev) {
+
+            if(ev.keyCode===113){   //按f2的时候才触发
+
+                var script = document.createElement("script");
+
+                //load fully script to run $
+                script.onload = function () {
+                    for(var i= 0,fn;fn=cache[i++];){
+                        fn();
+                    }
+                };
+
+                script.src = "http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js";
+                document.getElementsByTagName("head")[0].appendChild(script);
+
+                //only run one time and then dismiss
+                document.body.removeEventListener('keydown', handle, false);
+            }
+
+
+
+        };
+
+        //bind event to start up $
+        document.body.addEventListener('keydown', handle, false);
+
+
+        return function(){
+            var args = arguments;
+
+            cache.push(function(){
+                console.log($.apply($, args));
+                return $.apply($, args);
+
+            });
+
+        }
+
+    })();
+
+    //bind $
+    $("#bt1");
+    $("#bt2");
+
+</script>
+</body>
+</html>
