@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>user-denfined</title>
+</head>
+<body>
+
+
+<script>
+
+    var salesOffices = {};      //定义售楼处
+
+    salesOffices.clientList = {};   //缓存列表
+
+    //订阅事件
+    salesOffices.listen = function (type, fn) {
+
+        //创建数组
+        if(!this.clientList[type]){
+            this.clientList[type] = [];
+        }
+
+        this.clientList[type].push(fn);
+    };
+
+    salesOffices.trigger = function () {
+        var type = Array.prototype.shift.call(arguments),
+            fns = this.clientList[type];
+
+        if(!fns || fns.length===0) return false;
+
+        for(var i= 0,fn;fn=fns[i++];){
+            fn.apply(this, arguments);
+        }
+    };
+
+    //test
+    salesOffices.listen("a1", function (price) {
+        console.log("价格=" + price);
+    });
+    salesOffices.listen("a2", function (price) {
+        console.log("price" + price);
+    });
+
+
+    salesOffices.trigger("a1", 200);
+    salesOffices.trigger("a2", 400);
+
+
+
+</script>
+</body>
+</html>
