@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>user-denfined2</title>
+</head>
+<body>
+
+
+<script>
+
+    var Event = (function () {
+
+        var _default = "default";
+
+        var Event = (function () {
+
+            var _trigger,
+                _create,
+                _listen,
+                each,
+                _remove,
+                nameSpace = {},
+                _shift = Array.prototype.shift,
+                _unshift = Array.prototype.unshift;
+
+            each = function (arry, fn) {
+
+                for(var i=0,j=arry.length;i<j;i++){
+                    fn.call(arry[i], i, arry[i]);
+                }
+
+            };
+
+            _listen = function (key,fn,cache) {
+                if(!cache[key]) cache[key] = [];
+                cache[key].push(fn);
+            };
+
+            _trigger = function () {
+                var cache = _shift.call(arguments),
+                    key = _shift.call(arguments),
+                    args = arguments,
+                    _self = this,
+                    stack = cache[key];
+
+                    if(!stack || !stack.length) return false;
+
+                each(stack, function (index, fn) {
+                    return fn.apply(_self, args);
+                });
+            };
+
+            _remove = function (key,cache,fn) {
+                if(!cache[key]) return false;
+
+                if(fn){
+                    for(var i=cache[key].length;i>=0;i--){
+                        if(cache[key][i]===fn){
+                            cache[key].splice(i, 1);
+                        }
+                    }
+
+                }else {
+                    cache[key].length = 0;
+                }
+
+            };
+
+            _create = function (namespace) {
+                var namespace = namespace || _default,
+                    cache = {},
+                    offlineStack = [];      //离线事件
+
+                var ret = {
+                    listen:function (key,fn) {
+                        _listen(key, fn, cache);
+                        if(offlineStack===null) return;
+
+                        each(offlineStack, function () {
+                            this();
+                        });
+
+                    },
+                    trigger:function () {
+                        var _self = this,
+                            args,
+                            fn;
+
+                        _unshift.call(arguments, cache);
+                        args = arguments;
+
+                        fn = function () {
+                            return _trigger.apply(_self, args);
+                        };
+
+                        if(offlineStack){
+                            return offlineStack.push(fn);
+                        }
+
+
+                        return fn();
+                    },
+                    remove:function (key,fn) {
+                        _remove(key, cache, fn);
+                    }
+                };
+
+                return namespace?
+                    (nameSpace[namespace]?nameSpace[namespace]:
+                    nameSpace[namespace]=ret)
+                    :ret;
+            };
+
+
+            /**
+             * 外部使用接口
+             */
+            return {
+                create:_create,
+                listen:function (key,fn) {
+                    var Event = this.create();
+                    Event.listen(key, fn);
+                },
+                trigger:function () {
+                    var Event = this.create();
+                    Event.trigger.apply(this, arguments);
+                },
+                remove:function (key,fn) {
+                    var Event = this.create();
+                    Event.remove(key,fn)
+                }
+            };
+
+
+        })();
+
+        return Event;
+    })();
+
+    Event.trigger("a", 222);
+    Event.listen("a", function (data) {
+        console.log("a:" + data);
+    });
+
+</script>
+</body>
+</html>
