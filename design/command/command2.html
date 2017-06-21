@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>宏命令</title>
+</head>
+<body>
+
+
+<script>
+
+    var closeDoor = {
+        excute:function () {
+            console.log("关门")
+        }
+    };
+
+    var openComputer = {
+        excute:function () {
+            console.log("关闭电脑");
+        }
+    };
+
+    //command list execute
+    var MakeCommand = function () {
+        return {
+            commandList:[],
+            excute:function () {
+                for(var i=0,command;command=this.commandList[i++];){
+                    command.excute();
+                }
+            }
+        };
+    };
+
+    //test
+    var make = MakeCommand();
+    make.commandList.push(closeDoor);
+    make.commandList.push(openComputer);
+    make.excute();
+
+
+
+
+</script>
+</body>
+</html>
