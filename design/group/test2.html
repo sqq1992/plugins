@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组合模式-扫描文件夹</title>
+</head>
+<body>
+
+
+    <button type="button" id="group">宏命令</button>
+
+
+    <script>
+
+        var Floder = function (name) {
+            this.name = name;
+            this.files = [];
+        };
+        Floder.prototype.add = function (file) {
+            this.files.push(file);
+        };
+        Floder.prototype.scan = function () {
+            console.log("开始扫描文件夹" + this.name);
+            for(var i=0,file;file=this.files[i++];){
+                file.scan();
+            }
+        };
+
+        var File = function (name) {
+            this.name = name;
+            this.files = [];
+        };
+        File.prototype.scan = function () {
+            console.log("开始扫描文件夹" + this.name);
+        };
+        File.prototype.add = function () {
+            throw new Error("叶对象不得拥有!");
+        };
+
+
+        //test
+        var floder = new Floder("学习资料");
+        var floder1 = new Floder("学习资料2");
+        var floder2 = new Floder("学习资料3");
+
+        var file = new File("发的发的发");
+        var file1 = new File("发的发的发2");
+        var file2 = new File("发的发的发3");
+
+        floder1.add(file1);
+        floder2.add(file2);
+
+        floder.add(floder1);
+        floder.add(floder2);
+        floder.add(file);
+
+        floder.scan();
+
+
+    </script>
+</body>
+</html>

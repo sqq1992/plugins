@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>宏命令的组合模式</title>
+</head>
+<body>
+
+
+    <button type="button" id="group">宏命令</button>
+
+
+    <script>
+
+        //宏命令的包装
+        var MakeCommand = function () {
+            return {
+                commandList:[],
+                add:function (command) {
+                    this.commandList.push(command);
+                },
+                execute:function () {
+                    for(var i=0,command;command=this.commandList[i++];){
+                        command.execute();
+                    }
+                }
+            };
+        };
+
+
+        var a = {
+            execute:function () {
+                console.log("aaaa");
+            }
+        };
+        var b = {
+            execute:function () {
+                console.log("bbbb");
+            }
+        };
+        var c = {
+            execute:function () {
+                console.log("cccc");
+            }
+        };
+        var d = {
+            execute:function () {
+                console.log("dddd");
+            }
+        };
+
+        //test
+        var mc1 = MakeCommand();
+        mc1.add(a);
+        mc1.add(b);
+
+        var mc2 = MakeCommand();
+        mc2.add(c);
+        mc2.add(d);
+
+        var mc = MakeCommand();
+        mc.add(mc1);
+        mc.add(mc2);
+
+        mc.execute();
+
+    </script>
+</body>
+</html>
