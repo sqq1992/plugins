@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板方法</title>
+</head>
+<body>
+
+
+<script>
+
+    var BererVage = function () {
+
+    };
+    BererVage.prototype.first = function () {
+        throw new Error("子类必须重新first方法");
+    };
+    BererVage.prototype.second = function () {
+        throw new Error("子类必须重新Second方法");
+    };
+    BererVage.prototype.third = function () {
+        throw new Error("子类必须重新Third方法");
+    };
+
+    //钩子方法，是否要走third（）
+    BererVage.prototype.isThird = function () {
+        return true;        //默认走第三步
+    };
+    BererVage.prototype.init = function () {
+        this.first();
+        this.second();
+        if(this.isThird())this.third();
+    };
+
+    //test
+    var Test = function () {
+
+    };
+    Test.prototype = new BererVage();
+    Test.prototype.first = function () {
+        console.log("Test第一步!");
+    };
+    Test.prototype.second = function () {
+        console.log("Test第二步!");
+    };
+    Test.prototype.third = function () {
+        console.log("Test第三步!");
+    };
+    Test.prototype.isThird = function () {
+        return window.confirm("请求是否走third？");
+    };
+    var test = new Test();
+    test.init();
+
+
+</script>
+</body>
+</html>

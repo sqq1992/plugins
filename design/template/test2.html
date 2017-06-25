@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板方法</title>
+</head>
+<body>
+
+
+<script>
+
+    var BererVage = function (params) {
+
+        var first = function () {
+            console.log("first方法");
+        };
+
+        var second = params.second || function () {
+            throw new Error("必须传递second方法")
+        };
+
+        var third = params.third || function () {
+                throw new Error("必须传递third方法")
+        };
+
+
+        var f = function () {
+
+        };
+        f.prototype.init = function () {
+            first();
+            second();
+            third();
+        };
+        return f;
+    };
+
+    //test
+    var Coffee = BererVage({
+        second:function () {
+            console.log("second");
+        },
+        third:function () {
+            console.log("third");
+        }
+    });
+    var coffee = new Coffee();
+    coffee.init();
+
+
+
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>组合模式-扫描文件夹</title>
+    <title>组合模式-扫描文件夹2</title>
 </head>
 <body>
 
@@ -15,8 +15,10 @@
         var Floder = function (name) {
             this.name = name;
             this.files = [];
+            this.parent = null;
         };
         Floder.prototype.add = function (file) {
+            file.parent = this;
             this.files.push(file);
         };
         Floder.prototype.scan = function () {
@@ -25,16 +27,38 @@
                 file.scan();
             }
         };
+        Floder.prototype.remove = function () {
+            if(!this.parent) return;
+
+            for(var files=this.parent.files,l = files.length-1;l>=0;l--){
+                var file = files[l];
+                if(file===this){
+                    files.splice(l, 1);
+                }
+            }
+        };
+
 
         var File = function (name) {
             this.name = name;
             this.files = [];
+            this.parent = null;
         };
         File.prototype.scan = function () {
             console.log("开始扫描文件夹" + this.name);
         };
         File.prototype.add = function () {
             throw new Error("不得添加在文件下面!");
+        };
+        File.prototype.remove = function () {
+            if(!this.parent) return;
+
+            for(var files = this.parent.files,l=files.length-1;l>=0;l--){
+                var file = files[l];
+                if(file===this){
+                    files.splice(l, 1);
+                }
+            }
         };
 
 
@@ -53,6 +77,8 @@
         floder.add(floder1);
         floder.add(floder2);
         floder.add(file);
+
+        floder1.remove();
 
         floder.scan();
 
