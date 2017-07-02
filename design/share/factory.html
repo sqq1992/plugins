@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>享元模式</title>
+</head>
+<body>
+
+
+<script>
+
+    var Factory = (function () {
+        var obj = {};
+
+        return{
+            create:function (type) {
+                if(obj[type]){
+                    return obj[type];
+                }
+                return obj[type] = new String(type);
+            }
+        }
+    })();
+
+    var Manger = (function () {
+        var allObj = {};
+
+        return{
+            add:function (id,type,fileName,fileSize) {
+                var obj = Factory.create(type);
+
+                var dom = document.createElement("div");
+                dom.innerHTML =
+                    '<span>文件名称' + fileName + ',文件大小:' + fileSize + '</span>' +
+                    '<button class="del">删除</button>';
+
+                dom.querySelector('.del').onclick = function () {
+                    console.log(obj);
+                };
+
+                document.body.appendChild(dom);
+
+                return obj;
+            }
+        }
+
+    })();
+
+    var id=0;
+    window.start = function (type, files) {
+        for(var i=0,file;file = files[i++];){
+            var upObj = Manger.add(++id, type, file.name, file.size);
+        }
+    };
+    start('aa',[
+        {
+            name:"aa",
+            size:'1024'
+        },
+        {
+            name:"aaa",
+            size:'2048'
+        }
+    ])
+
+    start('bb',[
+        {
+            name:"bb",
+            size:'1024'
+        },
+        {
+            name:"bb",
+            size:'2048'
+        }
+    ])
+
+
+
+</script>
+</body>
+</html>
