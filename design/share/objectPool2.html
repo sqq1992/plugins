@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对象池2</title>
+</head>
+<body>
+
+
+<script>
+
+    var objectPoolFactory = function (fn) {
+        var objectPool = [];
+
+        return{
+
+            create:function () {
+                var obj = objectPool.length === 0 ?
+                    fn.apply(this, arguments) : objectPool.shift();
+
+                return obj;
+            },
+
+            recover:function (obj) {
+                objectPool.push(obj);
+            }
+
+        }
+    };
+
+    var iframeFactory = objectPoolFactory(function () {
+        var iframe = document.createElement("iframe");
+        document.body.appendChild(iframe);
+
+        iframe.onload = function () {
+            iframe.onload = null;
+            iframeFactory.recover(iframe);
+        };
+
+        return iframe;
+
+    });
+
+
+    //test
+    var iframe1 = iframeFactory.create();
+    iframe1.src = "http://baidu.com";
+
+    var iframe2 = iframeFactory.create();
+    iframe2.src = "http://QQ.com";
+
+
+
+</script>
+</body>
+</html>
