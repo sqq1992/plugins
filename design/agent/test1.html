@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中介者模式</title>
+</head>
+<body>
+
+
+<script>
+
+    function Player(name) {
+        this.name = name;
+        this.enemy = null;
+    }
+
+    Player.prototype.win = function () {
+        console.log(this.name + "win");
+    };
+
+    Player.prototype.lose = function () {
+        console.log(this.name + "lost");
+    };
+
+    Player.prototype.die = function () {
+        this.lose();
+        this.enemy.win();
+    };
+
+    //test
+    var p1 = new Player("皮蛋");
+    var p2 = new Player("小怪");
+
+    p1.enemy = p2;
+    p2.enemy = p1;
+
+    p1.die();
+
+
+</script>
+</body>
+</html>

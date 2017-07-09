@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中介者模式2(多人泡泡堂)</title>
+</head>
+<body>
+
+
+<script>
+
+
+    function Player(name,teamColor) {
+        this.partners = [];
+        this.enemies = [];
+        this.state = "live";
+        this.name = name;
+        this.teamColor = teamColor;
+    }
+
+    Player.prototype.win = function () {
+        console.log(this.name + "win");
+    };
+
+    Player.prototype.lose = function () {
+        console.log(this.name + "lost");
+    };
+
+    Player.prototype.die = function () {
+
+        var all_dead = true;
+        this.state = "dead";
+
+        //遍历队友列表，如何还有人没死， 则未失败
+        for(var i=0,partner;partner=this.partners[i++];){
+            if(partner.state!=="dead"){
+                all_dead = false;
+                break;
+            }
+        }
+
+        //如果都死了的话
+        if(all_dead){
+            this.lose();
+
+            //通知队友游戏失败
+            for(var i=0,partner;partner=this.partners[i++];){
+                partner.lose();
+            }
+
+            //通知敌人游戏胜利
+            for(var i=0,enemy;enemy=this.enemies[i++];){
+                enemy.win();
+            }
+        }
+    };
+
+    //暂时存储所有的玩家
+    var players = [];
+
+    var playerFactory = function (name, teamColor) {
+        var newPlayer = new Player(name, teamColor);
+
+        for (var i = 0, player; player = players[i++];) {
+
+            if (player.teamColor === newPlayer.teamColor) { //如果是同一玩家
+                player.partners.push(newPlayer);
+                newPlayer.partners.push(player);
+            } else { //  如果是敌对玩家
+                player.enemies.push(newPlayer);
+                newPlayer.enemies.push(player);
+            }
+
+        }
+
+        players.push(newPlayer);
+        return newPlayer
+    };
+
+    //test
+    var p1 = playerFactory("皮蛋", "red");
+    var p2 = playerFactory("我的", "red");
+    var p3 = playerFactory("老虎", "red");
+
+    var p4 = playerFactory("黑妞", 'blue');
+    var p5 = playerFactory("黑妞2", 'blue');
+    var p6 = playerFactory("嚣张", 'blue');
+
+    p1.die();
+    p2.die();
+    p3.die();
+
+</script>
+</body>
+</html>
