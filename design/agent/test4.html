@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中介者模式4</title>
+</head>
+<body>
+
+    选择颜色:<select id="colorSelect">
+                <option value="">请选择</option>
+                <option value="red">红色</option>
+                <option value="blue">蓝色</option>
+            </select>
+
+    输入购买数量:<input type="text" id="numberInput" /><br>
+
+    您选择了颜色:<div id="colorInfo"></div>
+    您选择了数量:<div id="numberInfo"></div>
+
+
+    <button id="nextBtn" disabled="true">请选择手机颜色和购买数量</button>
+
+
+    <script>
+
+        var goods = {
+            red: 3,
+            blue6: 6
+        };
+
+        var colorSelect = document.getElementById("colorSelect");
+        var numberInput = document.getElementById("numberInput");
+
+        var meditor = (function () {
+
+            var colorSelect = document.getElementById("colorSelect");
+            var numberInput = document.getElementById("numberInput");
+            var colorInfo = document.getElementById("colorInfo");
+            var numberInfo = document.getElementById("numberInfo");
+            var nextBtn = document.getElementById("nextBtn");
+
+
+            return {
+                changed:function (obj) {
+                    var color = colorSelect.value;
+                    var number = numberInput.value;
+
+                    if(obj===colorSelect){
+                        colorInfo.innerHTML = color;
+                    }else if(obj===numberInput){
+                        numberInfo.innerHTML = number;
+                    }
+
+
+                    if(!color){
+                        nextBtn.disabled = true;
+                        nextBtn.innerHTML = "请选择手机颜色";
+                        return;
+                    }
+
+                    if(((number-0)|0)!==number-0){
+                        nextBtn.disabled = true;
+                        nextBtn.innerHTML = "请输入数量";
+                        return;
+                    }
+
+                    nextBtn.disabled = false;
+                    nextBtn.innerHTML = "放入购物车";
+
+                }
+            }
+
+        })();
+
+
+        //test
+        colorSelect.onchange = function () {
+            meditor.changed(this);
+        };
+
+        numberInput.oninput = function () {
+            meditor.changed(this);
+        };
+
+
+
+
+    </script>
+</body>
+</html>

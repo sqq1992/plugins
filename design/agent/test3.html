@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中介者模式3(多人泡泡堂)</title>
+</head>
+<body>
+
+
+<script>
+
+
+    function Player(name,teamColor) {
+        this.state = "live";
+        this.name = name;
+        this.teamColor = teamColor;
+    }
+
+    Player.prototype.win = function () {
+        console.log(this.name + "win");
+    };
+
+    Player.prototype.lose = function () {
+        console.log(this.name + "lost");
+    };
+
+    Player.prototype.die = function () {
+        this.state = "dead";
+        playDirector.ReceiveManger("playerDead", this);
+    };
+    Player.prototype.remove = function () {
+        playDirector.ReceiveManger("removePlayer", this);
+    };
+    Player.prototype.changeTeam = function (color) {
+        playDirector.ReceiveManger("changeTeam", this,color);
+    };
+
+
+
+    var playerFactory = function (name, teamColor) {
+        var newPlayer = new Player(name, teamColor);
+        playDirector.ReceiveManger("add", newPlayer);
+        return newPlayer;
+    };
+
+    //中介者函数
+    var playDirector = (function () {
+        var players = {},       //保留所有玩家
+            operations = {};    //可以操作的模式
+
+        //增加玩家
+        operations.add = function (player) {
+            var teamColor = player.teamColor;
+
+            //初始化队伍列表
+            players[teamColor] = players[teamColor] || [];
+            //增加玩家
+            players[teamColor].push(player);
+        };
+
+        //移出玩家
+        operations.removePlayer = function (player) {
+            var teamColor = player.teamColor,
+                teamPlayers = players[teamColor];
+
+            for(var i=teamPlayers.length-1;i>=0;i--){
+                if(teamPlayers[i]===player){
+                    teamPlayers.splice(i, 1);
+                }
+            }
+        };
+
+        //更好队伍
+        operations.changeTeam = function (player,newTeamColor) {
+            operations.removePlayer(player);
+            player.teamColor = newTeamColor;
+            operations.add(player);
+        };
+
+        //玩家死亡
+        operations.playerDead = function (player) {
+            var teamColor = player.teamColor,
+                teamPlayers = players[teamColor];
+
+            var all_dead = true;
+            for(var i=0,player;player=teamPlayers[i++];){
+                if(player.state!=="dead"){
+                    all_dead = false;
+                    break;
+                }
+            }
+
+            //玩家全部死亡
+            if(all_dead){
+
+                for(var i=0,player;player=teamPlayers[i++];){
+                    player.lose();
+                }
+
+                for(var color in players){
+
+                    if(color!==teamColor){
+                        var teamPlayers = players[color];   //其他队的玩家
+                        for(var i=0,player;player=teamPlayers[i++];){
+                            player.win();
+                        }
+                    }
+
+                }
+
+            }
+
+
+        };
+
+        var ReceiveManger = function () {
+            var message = Array.prototype.shift.call(arguments);
+            operations[message].apply(this, arguments);
+        };
+
+        return{
+            ReceiveManger:ReceiveManger
+        }
+
+    })();
+
+    //test
+    var p1 = playerFactory("小瓜", "red");
+    var p2 = playerFactory("小瓜2", "red");
+
+    var p3 = playerFactory("大褂", "blue");
+    var p4 = playerFactory("大褂2", "blue");
+
+    p1.die();
+    p2.die();
+
+
+</script>
+</body>
+</html>
