@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>装饰者1</title>
+</head>
+<body>
+
+
+<script>
+
+    var plane = function () {
+
+    };
+    plane.prototype.fire = function () {
+        console.log("发射子弹!");
+    };
+
+    //add two decorate object
+    var AAADecorate = function (plane) {
+        this.plane = plane
+    };
+    AAADecorate.prototype.fire = function () {
+        this.plane.fire();
+        console.log("发射AAA!");
+    };
+
+    var BBBDecorate = function (plane) {
+        this.plane = plane;
+    };
+    BBBDecorate.prototype.fire = function () {
+        this.plane.fire();
+        console.log("发射BBB!");
+    };
+
+    var plane1 = new plane();
+    plane1 = new AAADecorate(plane1);
+    plane1 = new BBBDecorate(plane1);
+   plane1.fire();
+
+
+
+</script>
+</body>
+</html>
