@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多维数组</title>
+</head>
+<body>
+
+
+<script>
+    
+    Array.matrix = function (rows,cols,initVal) {
+        var arry = [];
+
+        for (var i=0;i<rows;i++){
+            var columns = [];
+            for (var j=0;j<cols;j++){
+                columns[j] = initVal;
+            }
+            arry[i] = columns;
+        }
+
+        return arry;
+    }
+
+    console.log(Array.matrix(5, 5, 3));
+    
+    
+</script>
+
+</body>
+</html>
