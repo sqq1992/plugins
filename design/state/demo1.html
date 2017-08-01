@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>状态模式</title>
+</head>
+<body>
+
+
+<script>
+
+    var Light = function () {
+        this.state = "off";
+        this.button = null;
+    };
+
+    Light.prototype.init = function () {
+        var btn = document.createElement("button");
+        var _this = this;
+
+        btn.innerHTML = "开关";
+        this.button = document.body.appendChild(btn);
+        this.button.onclick = function () {
+            _this.change();
+        };
+
+    };
+
+    Light.prototype.change = function () {
+
+        if(this.state==="off"){
+            this.state = "on";
+            console.log("开灯");
+        }else if(this.state==="on"){
+            this.state = "off";
+            console.log("光灯");
+        }
+
+    };
+
+    var light = new Light();
+    light.init();
+
+
+</script>
+</body>
+</html>

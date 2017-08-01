@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>状态模式2</title>
+</head>
+<body>
+
+
+<script>
+
+    var OffLightState = function (light) {
+        this.light = light;
+    };
+    OffLightState.prototype.change = function () {
+        console.log("弱光");
+        this.light.setState(this.light.weakLightState);
+    };
+
+    var weakLightState = function (light) {
+        this.light = light;
+    };
+    weakLightState.prototype.change = function () {
+        console.log("强光");
+        this.light.setState(this.light.strongLightState);
+    };
+
+    var strongLightState = function (light) {
+        this.light = light;
+    };
+    strongLightState.prototype.change = function () {
+        console.log("关灯");
+        this.light.setState(this.light.offLightState);
+    };
+
+
+    var Light = function () {
+        this.offLightState = new OffLightState(this);
+        this.weakLightState = new weakLightState(this);
+        this.strongLightState = new strongLightState(this);
+
+
+        this.button = null;
+    };
+
+    Light.prototype.init = function () {
+        var btn = document.createElement("button");
+        var _this = this;
+        btn.innerHTML = "开关";
+
+        //默认设置当前状态
+        this.currentState = this.offLightState;
+
+        this.button = document.body.appendChild(btn);
+        this.button.onclick = function () {
+            _this.currentState.change();
+        };
+
+    };
+
+    Light.prototype.setState = function (newState) {
+
+        this.currentState = newState;
+
+    };
+
+
+    var light = new Light();
+    light.init();
+
+
+</script>
+</body>
+</html>
