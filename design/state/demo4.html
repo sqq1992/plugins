@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>状态模式4</title>
+</head>
+<body>
+
+
+<script>
+
+    var Fsm = {
+        off:{
+            buttonWasPressed:function () {
+                console.log("关灯");
+                this.button.innerHTML = "下一次按我是开灯";
+                this.currentState = Fsm.on;
+            }
+        },
+
+        on:{
+            buttonWasPressed:function () {
+                console.log("开灯");
+                this.button.innerHTML = "下一次按我是关灯";
+                this.currentState = Fsm.off;
+            }
+        }
+
+
+    };
+
+    var Light = function () {
+        this.currentState = Fsm.off;
+        this.button = null;
+    };
+
+    Light.prototype.init = function () {
+
+        var button = document.createElement("button"),
+            _this = this;
+
+        button.innerHTML = "已关等";
+        this.button = document.body.appendChild(button);
+
+        this.button.onclick = function () {
+
+            _this.currentState.buttonWasPressed.call(_this);
+
+        };
+
+    };
+
+    var light = new Light();
+    light.init();
+
+
+</script>
+</body>
+</html>
