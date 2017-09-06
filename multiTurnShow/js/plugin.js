@@ -81,7 +81,7 @@
         var showLength = this.showLength,
             copyLen = showLength - 1,
             oneWidth = this.oneWidth,
-            prevNodes = this.lists.slice(showLength - copyLen, showLength).clone(true),
+            prevNodes = this.lists.slice(showLength - copyLen-1, showLength).clone(true),
             nextNodes = this.lists.slice(0, copyLen).clone(true),
             addLen = prevNodes.size();
 

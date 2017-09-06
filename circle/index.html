@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>圆弧</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        #app{
+            margin: 80px;
+            width:300px;
+            height: 300px;
+            background: grey;
+        }
+
+        #circle{
+            height:100%;
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <canvas id="circle" width="300" height="300"></canvas>
+    </div>
+
+    <script>
+        var domEl = document.getElementById("circle");
+        var context = domEl.getContext("2d");
+        var width = domEl.width,
+            height = domEl.height;
+
+        context.width = width;
+        context.height = height
+
+
+        context.beginPath();
+        context.moveTo(width/2, height/2)
+        context.arc(width/2, height/2, width/2, -Math.PI/2, Math.PI/2);
+        context.fillStyle = "rgba(0,0,0,0.2)";
+        context.closePath()
+        context.fill();
+
+
+
+    </script>
+</body>
+</html>
