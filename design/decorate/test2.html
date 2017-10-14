@@ -9,38 +9,53 @@
 
 <script>
 
-    Function.prototype.before = function (beforeFn) {
-        var _this = this;
+//    Function.prototype.before = function (beforeFn) {
+//        var _this = this;
+//
+//        return function () {
+//            beforeFn.apply(this, arguments);
+//            return _this.apply(this, arguments);
+//        };
+//
+//    };
+//
+//    Function.prototype.after = function (afterFn) {
+//        var _this = this;
+//
+//        return function () {
+//
+//            var ret = _this.apply(this, arguments);
+//            afterFn.apply(this, arguments);
+//            return ret;
+//        };
+//
+//    };
+//
+//
+//    function a() {
+//        console.log("2");
+//    }
+//    var b = a.before(function () {
+//        console.log("1");
+//    }).after(function () {
+//        console.log("3");
+//    });
+//    b();
 
-        return function () {
-            beforeFn.apply(this, arguments);
-            return _this.apply(this, arguments);
-        };
-
-    };
-
-    Function.prototype.after = function (afterFn) {
-        var _this = this;
-
-        return function () {
-
-            var ret = _this.apply(this, arguments);
-            afterFn.apply(this, arguments);
-            return ret;
-        };
-
-    };
-
-
-    function a() {
-        console.log("2");
+    function fn(){
+        var n = 999;
+        nAdd = function() {
+            n += 1;
+        }
+        function f2() {
+            console.log(n);
+        }
+        return f2; // 此处修改
     }
-    var b = a.before(function () {
-        console.log("1");
-    }).after(function () {
-        console.log("3");
-    });
-    b();
+    var result = fn();
+    result();
+    nAdd();
+    result();
 
 
 </script>
