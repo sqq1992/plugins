@@ -69,5 +69,78 @@
 
 </script>
 
+<script>
+    // 深度优先遍历复制, 借助队列
+    function deepCopy(obj) {
+        var newObj = {},
+                srcQueue = [obj], srcVisitedQueue = [],
+                copyQueue = [newObj], copyVisitedQueue = [];
+
+        while (srcQueue.length > 0) {
+            var currentSrcElement = srcQueue.shift(),
+                    currentCopyElement = copyQueue.shift();
+
+            srcVisitedQueue.push(currentSrcElement);
+            copyVisitedQueue.push(currentCopyElement);
+
+            for (var key in currentSrcElement) {
+                if (typeof currentCopyElement[key] !== 'object') {
+                    currentCopyElement[key] = currentSrcElement[key];
+                } else {
+                    // 有环的情况
+                    var index = srcVisitedQueue.indexOf(currentSrcElement[key]);
+                    if (index >= 0) {
+                        currentCopyElement[key] = copyVisitedQueue[index];
+                    } else {
+                        srcQueue.push(currentSrcElement[key]);
+                        currentCopyElement[key] = {};
+                        copyQueue.push(currentCopyElement[key]);
+                    }
+                }
+            }
+        }
+
+        return newObj;
+    }
+
+    var a = deepCopy({
+        a:1,
+        b:2,
+        c:3
+    })
+
+
+    // demo01
+
+//    var fn;
+//    function foo() {
+//        var a = 2;
+//        function baz() {
+//            console.log( a );
+//        }
+//        fn = baz;
+//    }
+//    function bar() {
+//        fn();
+//    }
+//
+//    foo();
+//    bar(); // 2
+
+
+    var a = {
+        a:1,
+        b:2
+    };
+
+    console.log(a);
+    a.c = 3;
+    console.log(a);
+
+
+
+
+</script>
+
 </body>
 </html>

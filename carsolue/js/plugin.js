@@ -1,35 +1,35 @@
 /**
- * Ğı×ªÄ¾ÂíµÄ²å¼ş
+ * æ—‹è½¬æœ¨é©¬çš„æ’ä»¶
  */
 ;
 (function ($) {
 
     var Carousel = function (element,option) {
-        this.element = element;     //µ±Ç°½Úµã
-        this.options = option;      //µ±Ç°ÅäÖÃ²ÎÊı
+        this.element = element;     //å½“å‰èŠ‚ç‚¹
+        this.options = option;      //å½“å‰é…ç½®å‚æ•°
 
-        this.pic = this.element.find(".pic-box li");    //Í¼Æ¬ÁĞ±í
-        this.picBox = this.element.find(".pic-box");    //Í¼Æ¬ÇøÓò
-        this.preBtn = this.element.find(".pre-btn");    //Ïò×ó°´Å¥
-        this.nextBtn = this.element.find(".next-btn");  //ÏòÓÒ°´Å¥
+        this.pic = this.element.find(".pic-box li");    //å›¾ç‰‡åˆ—è¡¨
+        this.picBox = this.element.find(".pic-box");    //å›¾ç‰‡åŒºåŸŸ
+        this.preBtn = this.element.find(".pre-btn");    //å‘å·¦æŒ‰é’®
+        this.nextBtn = this.element.find(".next-btn");  //å‘å³æŒ‰é’®
 
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         this.init();
     };
 
     Carousel.prototype = {
         constructor:Carousel,
 
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         init:function(){
 
-            //ÅäÖÃ½ÚµãĞÅÏ¢
+            //é…ç½®èŠ‚ç‚¹ä¿¡æ¯
             this._configDom();
 
-            //ÅäÖÃÎ»ÖÃĞÅÏ¢
+            //é…ç½®ä½ç½®ä¿¡æ¯
             this._setPos();
 
-            //ÅäÖÃÊÂ¼şĞÅÏ¢
+            //é…ç½®äº‹ä»¶ä¿¡æ¯
             if(this.picLength===1){
 
             }else{
@@ -37,7 +37,7 @@
             }
         },
 
-        //ÅäÖÃ½ÚµãĞÅÏ¢
+        //é…ç½®èŠ‚ç‚¹ä¿¡æ¯
         _configDom:function(){
             this.picLength = this.pic.size();
 
@@ -49,7 +49,7 @@
                 if(this.picLength%2===0){
                     this.isOdd = false;
                     //this.picBox.append(this.pic.first().clone());
-                    //this.pic = this.element.find(".pic-box li");    //Í¼Æ¬ÁĞ±í
+                    //this.pic = this.element.find(".pic-box li");    //å›¾ç‰‡åˆ—è¡¨
                 }else{
                     this.isOdd = true;
                 }
@@ -59,34 +59,34 @@
 
         },
 
-        //ÅäÖÃÎ»ÖÃĞÅÏ¢
+        //é…ç½®ä½ç½®ä¿¡æ¯
         _setPos:function(){
             var _this = this;
             var options = this.options;
             var SlicePic = this.pic.slice(1),
                 sliceSize = Math.ceil(SlicePic.size() / 2),
                 level = Math.ceil(SlicePic.size() / 2),  //
-                rightPic = SlicePic.slice(0, sliceSize), //ÓÒ±ßµÄÍ¼Æ¬
-                leftPic = SlicePic.slice(sliceSize),    //×ó±ßµÄÍ¼Æ¬
-                scale = options.scale,                  //Ëõ·Å±ÈÀı
-                width = options.width,                  //»­ÃæµÄ¿í¶È
-                height = options.height;                //»­ÃæµÄ¸ß¶È
+                rightPic = SlicePic.slice(0, sliceSize), //å³è¾¹çš„å›¾ç‰‡
+                leftPic = SlicePic.slice(sliceSize),    //å·¦è¾¹çš„å›¾ç‰‡
+                scale = options.scale,                  //ç¼©æ”¾æ¯”ä¾‹
+                width = options.width,                  //ç”»é¢çš„å®½åº¦
+                height = options.height;                //ç”»é¢çš„é«˜åº¦
 
-            //ÅäÖÃ×ÜÇøÓòµÄ¿í¸ß
+            //é…ç½®æ€»åŒºåŸŸçš„å®½é«˜
             this.element.css({
                 width:width,
                 height:height
             });
 
-            //Ò»Ğ©¹«¹²µÄÊôĞÔÖµ
+            //ä¸€äº›å…¬å…±çš„å±æ€§å€¼
             var rw = options.showWidth,
                 rh = options.showHeight,
-                gap = ((options.width-options.showWidth)/2)/level;  //²ã¼¶¿í¶È
+                gap = ((options.width-options.showWidth)/2)/level;  //å±‚çº§å®½åº¦
 
             var fistLeft = (options.width - options.showWidth) / 2;
             var fixOffsetLeft = fistLeft+rw;
 
-            //ÅäÖÃµÚÒ»¸ö½Úµã
+            //é…ç½®ç¬¬ä¸€ä¸ªèŠ‚ç‚¹
             this.firstPic.css({
                 width: rw,
                 height: rh,
@@ -96,10 +96,10 @@
                 zIndex: level + 1
             }).addClass('active');
 
-            //ÅäÖÃ×óÓÒµÄ°´Å¥ÊôĞÔ
+            //é…ç½®å·¦å³çš„æŒ‰é’®å±æ€§
             this.preBtn.css({
-               width:fistLeft,
-               zIndex:level+1
+                width:fistLeft,
+                zIndex:level+1
             });
 
             this.nextBtn.css({
@@ -107,13 +107,13 @@
                 zIndex:level+1
             });
 
-            //ÅäÖÃÓÒ±ß½ÚµãµÄ¿í¸ßµÈÊôĞÔ
+            //é…ç½®å³è¾¹èŠ‚ç‚¹çš„å®½é«˜ç­‰å±æ€§
             rightPic.each(function (i) {
 
                 rw = rw * scale;
                 rh = rh * scale;
 
-                var j = i;  //ÔİÊ±ĞÔÅĞ¶ÏÁĞ±íµÄË÷Òı
+                var j = i;  //æš‚æ—¶æ€§åˆ¤æ–­åˆ—è¡¨çš„ç´¢å¼•
                 var tempZindex = level - 1 - i;
 
                 $(this).css({
@@ -127,9 +127,9 @@
 
             });
 
-            //ÅäÖÃÓÒ½ÚµãµÄ¿í¸ßµÈÊôĞÔ
+            //é…ç½®å³èŠ‚ç‚¹çš„å®½é«˜ç­‰å±æ€§
             var tempLeftLevel = level;
-            var firstFlag = true;   //½öÏŞÓÚµÚÒ»´Î
+            var firstFlag = true;   //ä»…é™äºç¬¬ä¸€æ¬¡
             var tempI = 0;
             leftPic.each(function (i) {
 
@@ -160,15 +160,15 @@
         },
 
         /**
-         * ÅäÖÃÊÂ¼şĞÅÏ¢
+         * é…ç½®äº‹ä»¶ä¿¡æ¯
          * @private
          */
         _initEvent:function(){
 
             var _this = this;
-            this.rotateFlag = true; //ÄÜ·ñÔË¶¯µÄ±êÖ¾
+            this.rotateFlag = true; //èƒ½å¦è¿åŠ¨çš„æ ‡å¿—
 
-            //µã»÷ÓÒ±ß°´Å¥
+            //ç‚¹å‡»å³è¾¹æŒ‰é’®
             this.nextBtn.click(function () {
                 if(_this.rotateFlag){
                     _this.rotateFlag = false;
@@ -176,7 +176,7 @@
                 }
             });
 
-            //µã»÷×ó±ß°´Å¥
+            //ç‚¹å‡»å·¦è¾¹æŒ‰é’®
             this.preBtn.click(function () {
                 if(_this.rotateFlag){
                     _this.rotateFlag = false;
@@ -186,20 +186,20 @@
         },
 
         /**
-         * ½øĞĞÔË¶¯
-         * @param dir   ÔË¶¯·½Ïò
+         * è¿›è¡Œè¿åŠ¨
+         * @param dir   è¿åŠ¨æ–¹å‘
          * @private
          */
         _rotate:function(dir){
             var _this = this;
-            var zIndexArray = [];   //²»ĞèÒª½øĞĞ¶¯»­
+            var zIndexArray = [];   //ä¸éœ€è¦è¿›è¡ŒåŠ¨ç”»
             var cbCount = 0;
-            var activeFlag = true;//ÇĞ»»¼¤»îµãµÄ±êÖ¾
+            var activeFlag = true;//åˆ‡æ¢æ¿€æ´»ç‚¹çš„æ ‡å¿—
 
             this.pic.each(function () {
                 var $this = $(this),
-                    referNode = null,   //²ÎÊıÊôĞÔ½Úµã
-                    activeNode = null;  //¼¤»îµÄ½Úµã
+                    referNode = null,   //å‚æ•°å±æ€§èŠ‚ç‚¹
+                    activeNode = null;  //æ¿€æ´»çš„èŠ‚ç‚¹
 
                 switch (dir){
                     case 'right':
@@ -210,7 +210,7 @@
                         break;
                 }
 
-                //ÇĞ»»¼¤»î½Úµã
+                //åˆ‡æ¢æ¿€æ´»èŠ‚ç‚¹
                 if($this.hasClass('active') && activeFlag){
                     _this.pic.removeClass('active');
                     switch (dir){
@@ -225,7 +225,7 @@
                     activeFlag = false;
                 }
 
-                //ÏÂ¸ö»òÕßÉÏ¸ö½ÚµãµÄÊôĞÔ
+                //ä¸‹ä¸ªæˆ–è€…ä¸Šä¸ªèŠ‚ç‚¹çš„å±æ€§
                 var width = referNode.css("width"),
                     height = referNode.css('height'),
                     opacity = referNode.css('opacity'),
@@ -235,7 +235,7 @@
 
                 zIndexArray.push(zIndex)
 
-                //Òì²½Ö´ĞĞ¶¯»­
+                //å¼‚æ­¥æ‰§è¡ŒåŠ¨ç”»
                 $this.animate(
                     {
                         width:width,
@@ -251,7 +251,7 @@
                         ++cbCount;
 
                         if(cbCount===_this.pic.length){
-                            //Ö´ĞĞ»Øµ÷º¯Êı
+                            //æ‰§è¡Œå›è°ƒå‡½æ•°
                             _this.options.cb();
                         }
 
@@ -260,7 +260,7 @@
 
             });
 
-            //µ¥¶ÀÉèÖÃz-index·ÀÖ¹½øĞĞ¶¯»­
+            //å•ç‹¬è®¾ç½®z-indexé˜²æ­¢è¿›è¡ŒåŠ¨ç”»
             this.pic.each(function (i) {
                 $(this).css('zIndex', zIndexArray[i]);
             });
@@ -270,24 +270,24 @@
 
     };
 
-    //Ä¬ÈÏÅäÖÃ²ÎÊı
+    //é»˜è®¤é…ç½®å‚æ•°
     Carousel.DEFAULTS = {
-        isAutoPlay:false,   //ÊÇ·ñÂÖ²¥
-        width:1000,         //×ÜÇøÓò¿í¶È
-        height:270,         //×ÜÇøÓòµÄ¸ß¶È
-        showWidth:640,      //ÏÔÊ¾µ¥¸öÍ¼Æ¬µÄ¿í¶È
-        showHeight:270,      //ÏÔÊ¾µ¥¸öÍ¼Æ¬µÄ¸ß¶È
-        scale:0.9,           //Ëõ·Å±ÈÀı
-        speed:500           //ÔË¶¯¶¯»­
+        isAutoPlay:false,   //æ˜¯å¦è½®æ’­
+        width:1000,         //æ€»åŒºåŸŸå®½åº¦
+        height:270,         //æ€»åŒºåŸŸçš„é«˜åº¦
+        showWidth:640,      //æ˜¾ç¤ºå•ä¸ªå›¾ç‰‡çš„å®½åº¦
+        showHeight:270,      //æ˜¾ç¤ºå•ä¸ªå›¾ç‰‡çš„é«˜åº¦
+        scale:0.9,           //ç¼©æ”¾æ¯”ä¾‹
+        speed:500           //è¿åŠ¨åŠ¨ç”»
     };
 
     $.fn.carousel = function (option) {
 
         return this.each(function () {
-            var $this = $(this);        //µ±Ç°ÒªÏÔÊ¾µÄ²à±ßÀ¸µÄjq½Úµã
-            var options = $.extend({}, Carousel.DEFAULTS, typeof option === "object" && option);  //ÅäÖÃ²ÎÊı
+            var $this = $(this);        //å½“å‰è¦æ˜¾ç¤ºçš„ä¾§è¾¹æ çš„jqèŠ‚ç‚¹
+            var options = $.extend({}, Carousel.DEFAULTS, typeof option === "object" && option);  //é…ç½®å‚æ•°
 
-            var data = $this.data('carousel');     //´æ·Å²å¼şÊµÁĞ
+            var data = $this.data('carousel');     //å­˜æ”¾æ’ä»¶å®åˆ—
             if(!data) $this.data('carousel',data = new Carousel($this,options));
 
         });

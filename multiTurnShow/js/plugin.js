@@ -1,48 +1,4 @@
-/**
- * 判断浏览是否支持过度动画
- */
-+function ($) {
-    'use strict';
 
-    function transitionEnd() {
-        var el = document.createElement('testTransition')
-
-        //动画过度的回调事件
-        var transEndEventNames = {
-            'WebkitTransition' : 'webkitTransitionEnd',
-            'MozTransition'    : 'transitionend',
-            'OTransition'      : 'oTransitionEnd otransitionend',
-            'transition'       : 'transitionend'
-        }
-
-        for (var name in transEndEventNames) {
-            if (el.style[name] !== undefined) {
-                return { end: transEndEventNames[name] }
-            }
-        }
-
-        return false
-    }
-
-    /**
-     * 触发动画事件,如果某个元素不支持过度动画事件,这个来做为兼容
-     * @param duration  传入的延迟时间为毫秒数
-     * @returns {jQuery}
-     */
-    $.fn.emulateTransitionEnd = function (duration) {
-        var called = false, $el = this;
-        $(this).one($.support.transition.end, function () { called = true })
-        var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
-        setTimeout(callback, duration)
-        return this
-    }
-
-    $(function () {
-        //判断此浏览器是否支持动画过度
-        $.support.transition = transitionEnd();
-    })
-
-}(jQuery);
 
 
 

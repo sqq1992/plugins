@@ -1,0 +1,44 @@
+/* 重置样式 */
+body,div,ul,li,a,img,header,h1,h2,input,span,footer,label,button,i,section,footer,p,h3,h4,select,option,table,thead,th,tbody,tr,td,dl,dt,dd{margin: 0;padding: 0;-webkit-text-size-adjust: none;}
+ul li{list-style: none}
+a{text-decoration: none;}
+body{font:12px/1.5 arial,"Microsoft Yahei",sans-serif;background: #fff;}
+h1,h2{font-weight: normal;}
+input{border: 0 none;outline: none;}
+button{border: 0 none;background: none;}
+img{border: 0 none;}
+strong{font-weight: normal;}
+.cl:after{height: 0;clear:both;content: ".";overflow: hidden;visibility: hidden;display: block}
+.cl{zoom: 1;}
+
+
+.main{
+  background: #661e8a url(../img/active.jpg) no-repeat center top;
+  height:3525px;
+}
+
+.content{
+  width: 1000px;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.first{
+  height: 400px;
+  margin-top: 1200px;
+}
+.first-link{
+  display: block;
+  width: 600px;
+  height: 400px;
+}
+.second{
+  margin-top: 1500px;
+  height: 400px;
+}
+.second-link{
+  float: right;
+  height: 100%;
+  width: 472px;
+}
