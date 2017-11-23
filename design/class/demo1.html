@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多态</title>
+</head>
+<body>
+
+
+<script>
+    var makeSound = function (animal) {
+        animal.sound();
+    }
+
+    var Dog = function () {
+
+    };
+    Dog.prototype.sound = function () {
+        console.log("旺旺");
+    }
+
+    var Duck = function () {
+
+    };
+    Duck.prototype.sound = function () {
+        console.log("呱呱");
+    }
+
+    makeSound(new Dog());
+    makeSound(new Duck());
+
+
+</script>
+</body>
+</html>

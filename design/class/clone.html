@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>克隆</title>
+</head>
+<body>
+
+
+<script>
+
+    var plane = function () {
+        this.a = 1;
+        this.b = 2;
+        this.c = 3;
+    };
+
+    var newPlane = new plane();
+    newPlane.a = 5;
+    newPlane.b = 6;
+    newPlane.c = 7;
+
+    var clonePlane = Object.create(newPlane);
+    console.log(clonePlane);
+
+    function crate(obj) {
+        var F = function () {
+
+        };
+        F.prototype = obj;
+        return new F();
+    }
+
+    console.log(crate(newPlane));
+
+
+</script>
+</body>
+</html>

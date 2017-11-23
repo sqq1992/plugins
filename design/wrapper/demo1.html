@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>适配器模式</title>
+</head>
+<body>
+
+<script>
+    var baidu = {
+        show:function () {
+            console.log("baidu");
+        }
+    }
+    var google = {
+        display:function () {
+            console.log("google");
+        }
+    }
+
+    var googleAdpator = {
+        show:function () {
+            return google.display();
+        }
+    }
+
+    var render = function (map) {
+
+        if(map.show instanceof Function){
+            map.show();
+        }
+
+    }
+    render(baidu);
+    render(googleAdpator);
+</script>
+</body>
+</html>

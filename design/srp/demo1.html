@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单一职责原则</title>
+</head>
+<body>
+
+
+<script>
+
+    var getsingle = function (fn) {
+        var result;
+        return function () {
+            return result || (result = fn.apply(this, arguments));
+        }
+
+    }
+
+    var creativeLogin = function () {
+        var div = document.createElement('div');
+        div.innerHTML = "我是登录";
+        document.body.appendChild(div);
+        return div;
+    };
+
+    var createeLoginSingle = getsingle(creativeLogin);
+
+    var t1 = createeLoginSingle();
+    var t2 = createeLoginSingle();
+
+    //test
+    window.onload = function () {
+        console.log("first");
+    };
+    var first = window.onload;
+
+    window.onload = function () {
+        first()
+        console.log("second");
+    }
+
+
+</script>
+</body>
+</html>
