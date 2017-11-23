@@ -1,20 +1,20 @@
 /**
- * amdÄ£¿é»¯
+ * amdæ¨¡å—åŒ–
  */
 ;
 (function () {
 
-    //»º´æÄ£¿éµÄÊı¾İĞÅÏ¢
+    //ç¼“å­˜æ¨¡å—çš„æ•°æ®ä¿¡æ¯
     var moudleCache = {};
 
     /**
-     * Ö÷Èë¿Ú¼ÓÔØjsµÄÎÄ¼ş
-     * @param arry  Ç°ÖÃÒÀÀµµÄjs
-     * @param callBack  Ä£¿éµÄÖ´ĞĞº¯Êı
+     * ä¸»å…¥å£åŠ è½½jsçš„æ–‡ä»¶
+     * @param arry  å‰ç½®ä¾èµ–çš„js
+     * @param callBack  æ¨¡å—çš„æ‰§è¡Œå‡½æ•°
      */
     var require = function (arry,callBack) {
         var dependCount = 0,
-            allParams = [],        //²ÎÊıÊı×é£¬¸ø×îºóµÄº¯Êıµ÷ÓÃ
+            allParams = [],        //å‚æ•°æ•°ç»„ï¼Œç»™æœ€åçš„å‡½æ•°è°ƒç”¨
             moduleName = document.currentScript && document.currentScript.id || "no name";
 
         if(arry.length){
@@ -23,10 +23,10 @@
 
                 (function (i) {
                     dependCount++;
-                    loadModule(arry[i], function (params) { //¼ÓÔØÄ£¿é
+                    loadModule(arry[i], function (params) { //åŠ è½½æ¨¡å—
                         dependCount--;
                         allParams[i] = params;
-                        if(dependCount===0){    //µ±Ç°Ç°ÖÃÒÀÀµµÄjsÖ´ĞĞÍêºó£¬ÔÚÖ´ĞĞ×Ô¼ºµÄÄ£¿éº¯Êı
+                        if(dependCount===0){    //å½“å‰å‰ç½®ä¾èµ–çš„jsæ‰§è¡Œå®Œåï¼Œåœ¨æ‰§è¡Œè‡ªå·±çš„æ¨¡å—å‡½æ•°
                             saveModule(moduleName, allParams, callBack);
                         }
 
@@ -35,7 +35,7 @@
 
             }
 
-        }else{  //Ã»ÓĞÇ°ÖÃÒÀÀµµÄjsÊ±£¬Ö±½ÓÖ´ĞĞÄ£¿éÀïµÄjs
+        }else{  //æ²¡æœ‰å‰ç½®ä¾èµ–çš„jsæ—¶ï¼Œç›´æ¥æ‰§è¡Œæ¨¡å—é‡Œçš„js
             saveModule(moduleName,null, callBack);
         }
 
@@ -43,16 +43,16 @@
     };
 
     /**
-     * Ö´ĞĞÃ»ÓĞÒÀÀµµÄÄ£¿é
-     * @param moduleName jsµÄidÃû
-     * @param params    ´«ÈëµÄ²ÎÊı
-     * @param callBack  Ä£¿éµÄ×Ô¼º±¾ÉíÒªÖ´ĞĞµÄ»Øµ÷º¯Êı
+     * æ‰§è¡Œæ²¡æœ‰ä¾èµ–çš„æ¨¡å—
+     * @param moduleName jsçš„idå
+     * @param params    ä¼ å…¥çš„å‚æ•°
+     * @param callBack  æ¨¡å—çš„è‡ªå·±æœ¬èº«è¦æ‰§è¡Œçš„å›è°ƒå‡½æ•°
      */
     var saveModule = function (moduleName,params,callBack) {
         var mod,
             fn;
 
-        if(moudleCache[moduleName]){    //Èç¹û´æÔÚÒÀÀµ£¬ÔòÓÅ»¯Ö´ĞĞÒÀÀµµÄjs
+        if(moudleCache[moduleName]){    //å¦‚æœå­˜åœ¨ä¾èµ–ï¼Œåˆ™ä¼˜åŒ–æ‰§è¡Œä¾èµ–çš„js
             mod = moudleCache[moduleName];
             mod.status = "loaded";
             mod.expert = callBack && callBack.apply(null,params) || null;
@@ -60,7 +60,7 @@
             while(fn = mod.onload.shift()){
                 fn(mod.expert);
             }
-        }else{      //·ñÔòÖ±½ÓÖ´ĞĞ
+        }else{      //å¦åˆ™ç›´æ¥æ‰§è¡Œ
             callBack && callBack.apply(null, params);
         }
 
@@ -70,24 +70,24 @@
 
 
     /**
-     * ¼ÓÔØÒÀÀµµÄÄ£¿é
-     * @param moduleName    Ä£¿éµÄÃû×Öid
-     * @param callBack      Ä£¿é¶ÔÓ¦µÄ»Øµ÷º¯Êı
+     * åŠ è½½ä¾èµ–çš„æ¨¡å—
+     * @param moduleName    æ¨¡å—çš„åå­—id
+     * @param callBack      æ¨¡å—å¯¹åº”çš„å›è°ƒå‡½æ•°
      */
     var loadModule = function (moduleName,callBack) {
         var url = _getUrl(moduleName),
             mod;
 
-        if(moudleCache[moduleName]){    //Èç¹ûÄ£¿éÒÑ¾­´æÔÚ
+        if(moudleCache[moduleName]){    //å¦‚æœæ¨¡å—å·²ç»å­˜åœ¨
 
             mod = moudleCache[moduleName];
-            if(mod.status==="loaded"){  //Èç¹ûÒÀÀµµÄjsÒÑ¾­Ö´ĞĞ£¬ÔòÖ±½Óµ÷ÓÃ
+            if(mod.status==="loaded"){  //å¦‚æœä¾èµ–çš„jså·²ç»æ‰§è¡Œï¼Œåˆ™ç›´æ¥è°ƒç”¨
                 callBack(mod.expert);
-            }else{  //Î´Ö´ĞĞµÄ»°£¬ÔòÔö¼ÓÒ»´ÎÒÀÀµ
+            }else{  //æœªæ‰§è¡Œçš„è¯ï¼Œåˆ™å¢åŠ ä¸€æ¬¡ä¾èµ–
                 mod.onload.push(callBack);
             }
 
-        }else{  //Èç¹ûÄ£¿é»¹Î´¼ÓÔØµÄ»°£¬Ôò½øĞĞ»º´æ¼ÓÔØ
+        }else{  //å¦‚æœæ¨¡å—è¿˜æœªåŠ è½½çš„è¯ï¼Œåˆ™è¿›è¡Œç¼“å­˜åŠ è½½
 
             moudleCache[moduleName] = {
                 status:'loading',
@@ -108,7 +108,7 @@
     };
 
     /**
-     * Éú³ÉÏà¶ÔµÄjsµÄurl
+     * ç”Ÿæˆç›¸å¯¹çš„jsçš„url
      * @param name
      * @private
      */

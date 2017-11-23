@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<style>
+    .box{
+        display: block;
+        width: 500px;
+        height: 500px;
+        border: 1px solid #ccc;
+        margin: 60px;
+    }
+</style>
+<!--<script src="fabric.js"></script>-->
+<!--<script src="fabric1.4.js"></script>-->
+<script src="fabric1.6.js"></script>
+<!--<script src="fabric1.6-new.js"></script>-->
+<!--<script src="loadHash.js"></script>-->
+<script src="underscore.js"></script>
+<script src="jquery.min.js"></script>
+
+<body>
+
+<canvas id="c" width="400" height="400"  style="border: 0px solid #ccc;width:400px;height:400px"></canvas>
+
+
+    <script>
+
+//        $(document).ready(function(){
+//
+//            var canvas = document.getElementById('c'),
+//                    parent = $(canvas.parentNode);
+//            var context = canvas.getContext("2d");
+//            this.context = context;
+//            var width = parent.width(),
+//                    height = parent.height();
+//
+//            canvas.width = 400;
+//            canvas.height = 400
+//
+//
+//                var img01URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i2/1732912933/TB2nV8YXcaCJuJjy1zkXXbelVXa-1732912933.jpg';
+//                var img02URL = 'https://img.alicdn.com/bao/uploaded/i2/1732912933/TB2xVACdSCI.eBjy1XbXXbUBFXa-1732912933.jpg';
+//
+//                var canvas = new fabric.Canvas('c');
+//
+//    // Note the use of the `originX` and `originY` properties, which we set
+//    // to 'left' and 'top', respectively. This makes the math in the `clipTo`
+//    // functions a little bit more straight-forward.
+//                var clipPoly = new fabric.Polygon([
+//                    { x: 180, y: 10 },
+//                    { x: 300, y: 50 },
+//                    { x: 300, y: 180 },
+//                    { x: 180, y: 220 }
+//                ], {
+//                    originX: 'left',
+//                    originY: 'top',
+//                    left: 180,
+//                    top: 10,
+//                    width: 200,
+//                    height: 200,
+//                    fill: '#DDD', /* use transparent for no fill */
+//                    strokeWidth: 0,
+//                    selectable: false
+//                });
+//    // We give these `Rect` objects a name property so the `clipTo` functions can
+//    // find the one by which they want to be clipped.
+//                clipPoly.set({
+//                    clipFor: 'pug'
+//                });
+//                canvas.add(clipPoly);
+//
+//                var clipRect2 = new fabric.Rect({
+//                    originX: 'left',
+//                    originY: 'top',
+//                    left: 10,
+//                    top: 10,
+//                    width: 150,
+//                    height: 150,
+//                    fill: '#DDD', /* use transparent for no fill */
+//                    strokeWidth: 0,
+//                    selectable: false
+//                });
+//    // We give these `Rect` objects a name property so the `clipTo` functions can
+//    // find the one by which they want to be clipped.
+//                clipRect2.set({
+//                    clipFor: 'logo'
+//                });
+//                canvas.add(clipRect2);
+//
+//                function findByClipName(name) {
+//                    return _(canvas.getObjects()).where({
+//                        clipFor: name
+//                    }).__wrapped__[0]
+//                }
+//
+//    // Since the `angle` property of the Image object is stored
+//    // in degrees, we'll use this to convert it to radians.
+//                function degToRad(degrees) {
+//                    return degrees * (Math.PI / 180);
+//                }
+//
+//                var clipByName = function (ctx) {
+//                    this.setCoords();
+//                    var clipObj = findByClipName(this.clipName);
+//                    var scaleXTo1 = (1 / this.scaleX);
+//                    var scaleYTo1 = (1 / this.scaleY);
+//                    var skewXReverse = - this.skewX;
+//                    var skewYReverse = - this.skewY;
+//                    ctx.save();
+//
+//                    var ctxLeft = -( this.width / 2 ) + clipObj.strokeWidth;
+//                    var ctxTop = -( this.height / 2 ) + clipObj.strokeWidth;
+//                    var ctxWidth = clipObj.width - clipObj.strokeWidth;
+//                    var ctxHeight = clipObj.height - clipObj.strokeWidth;
+//
+//
+//                    ctx.translate( ctxLeft, ctxTop );
+//                    ctx.scale(scaleXTo1, scaleYTo1);
+//                    ctx.transform(1, skewXReverse, skewYReverse, 1, 0, 0);
+//                    ctx.rotate(degToRad(this.angle * -1));
+//
+//                    ctx.beginPath();
+//
+//                    var isPolygon = clipObj instanceof fabric.Polygon;
+//                    // polygon cliping area
+//                    if(isPolygon)
+//                    {
+//                        // prepare points of polygon
+//                        var points = [];
+//                        for(i in clipObj.points)
+//                            points.push({
+//                                x: (clipObj.left + clipObj.width / 2) + clipObj.points[i].x - this.oCoords.tl.x,
+//                                y: (clipObj.top + clipObj.height / 2) + clipObj.points[i].y - this.oCoords.tl.y
+//                            });
+//
+//                        ctx.moveTo(points[0].x, points[0].y);
+//                        for(i=1; i<points.length; ++i)
+//                        {
+//                            ctx.lineTo(points[i].x, points[i].y);
+//                        }
+//                        ctx.lineTo(points[0].x, points[0].y);
+//                    }
+//                    // rectangle cliping area
+//                    else
+//                    {
+//                        ctx.rect(
+//                                clipObj.left - this.oCoords.tl.x,
+//                                clipObj.top - this.oCoords.tl.y,
+//                                clipObj.width,
+//                                clipObj.height
+//                        );
+//                    }
+//
+//                    ctx.closePath();
+//
+//                    ctx.restore();
+//                }
+//
+//                var pugImg = new Image();
+//                pugImg.onload = function (img) {
+//                    var pug = new fabric.Image(pugImg, {
+//                        angle: 45,
+//
+//                        left: 230,
+//                        top: 50,
+//
+//                        clipName: 'pug',
+//                        clipTo: function(ctx) {
+//                            return _.bind(clipByName, pug)(ctx)
+//                        }
+//                    });
+//                    canvas.add(pug);
+//                };
+//                pugImg.src = img02URL;
+//
+//                var logoImg = new Image();
+//                logoImg.onload = function (img) {
+//                    var logo = new fabric.Image(logoImg, {
+//                        angle: 0,
+////                        width: 550,
+////                        height: 190,
+//                        left: 50,
+//                        top: 50,
+////                        scaleX: 0.25,
+////                        scaleY: 0.25,
+//                        clipName: 'logo',
+//                        clipTo: function(ctx) {
+//                            return _.bind(clipByName, logo)(ctx)
+//                        }
+//                    });
+//                    canvas.add(logo);
+//                };
+//                logoImg.src = img01URL;
+//
+//
+//        });
+
+
+
+
+
+
+    </script>
+
+
+<script>
+
+    window.onload = function () {
+        var img01URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i4/1732912933/TB2Z63kXK38SeJjSZFPXXc_vFXa-1732912933.jpg';
+        var img02URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i4/1732912933/TB2Z63kXK38SeJjSZFPXXc_vFXa-1732912933.jpg';
+
+        var cEl = document.getElementById('c');
+
+
+        var canvas = new fabric.Canvas('c');
+
+        // Note the use of the `originX` and `originY` properties, which we set
+        // to 'left' and 'top', respectively. This makes the math in the `clipTo`
+        // functions a little bit more straight-forward.
+        var clipPoly = new fabric.Polygon([
+            { x: 180, y: 10 },
+            { x: 300, y: 50 },
+            { x: 300, y: 180 },
+            { x: 180, y: 220 }
+        ], {
+            originX: 'left',
+            originY: 'top',
+            fill: 'transparent', /* use transparent for no fill */
+            strokeWidth: 0,
+            selectable: false
+        });
+        // We give these `Rect` objects a name property so the `clipTo` functions can
+        // find the one by which they want to be clipped.
+        clipPoly.set({
+            clipFor: 'pug'
+        });
+        canvas.add(clipPoly);
+
+
+        var clipRect2 = new fabric.Polygon([
+            { x: 10, y: 10 },
+            { x: 150, y: 10 },
+            { x: 150, y: 180 },
+            { x: 10, y: 180 }
+        ], {
+            originX: 'left',
+            originY: 'top',
+            fill: 'transparent', /* use transparent for no fill */
+            strokeWidth: 0,
+            selectable: false
+        });
+        // We give these `Rect` objects a name property so the `clipTo` functions can
+        // find the one by which they want to be clipped.
+        clipRect2.set({
+            clipFor: 'logo'
+        });
+        canvas.add(clipRect2);
+
+        function findByClipName(name) {
+//            return _(canvas.getObjects()).where({
+//                clipFor: name
+//            }).first()
+
+            return _(canvas.getObjects()).where({
+                        clipFor: name
+                    })[0]
+
+        }
+
+        // Since the `angle` property of the Image object is stored
+        // in degrees, we'll use this to convert it to radians.
+        function degToRad(degrees) {
+            return degrees * (Math.PI / 180);
+        }
+
+        var clipByName = function (ctx) {
+            this.setCoords();
+            var clipObj = findByClipName(this.clipName);
+            var scaleXTo1 = (1 / this.scaleX);
+            var scaleYTo1 = (1 / this.scaleY);
+            var skewXReverse = - this.skewX;
+            var skewYReverse = - this.skewY;
+            ctx.save();
+
+            var ctxLeft = -( this.width / 2 ) + clipObj.strokeWidth;
+            var ctxTop = -( this.height / 2 ) + clipObj.strokeWidth;
+            var ctxWidth = clipObj.width - clipObj.strokeWidth;
+            var ctxHeight = clipObj.height - clipObj.strokeWidth;
+
+
+            ctx.translate( ctxLeft, ctxTop );
+            ctx.scale(scaleXTo1, scaleYTo1);
+            ctx.transform(1, skewXReverse, skewYReverse, 1, 0, 0);
+            ctx.rotate(degToRad(this.angle * -1));
+
+            ctx.beginPath();
+
+            var isPolygon = clipObj instanceof fabric.Polygon;
+            // polygon cliping area
+            if(isPolygon)
+            {
+                // prepare points of polygon
+                var points = [];
+                for(i in clipObj.points)
+                    points.push({
+                        x: (clipObj.left + clipObj.width / 2) + clipObj.points[i].x - this.oCoords.tl.x,
+                        y: (clipObj.top + clipObj.height / 2) + clipObj.points[i].y - this.oCoords.tl.y
+                    });
+
+                ctx.moveTo(points[0].x, points[0].y);
+                for(i=1; i<points.length; ++i)
+                {
+                    ctx.lineTo(points[i].x, points[i].y);
+                }
+                ctx.lineTo(points[0].x, points[0].y);
+            }
+            // rectangle cliping area
+            else
+            {
+                ctx.rect(
+                        clipObj.left - this.oCoords.tl.x,
+                        clipObj.top - this.oCoords.tl.y,
+                        clipObj.width,
+                        clipObj.height
+                );
+            }
+
+            ctx.closePath();
+
+            ctx.restore();
+        }
+
+        var pugImg = new Image();
+        pugImg.onload = function (img) {
+            var pug = new fabric.Image(pugImg, {
+//                angle: 45,
+//                width: 500,
+//                height: 500,
+                left: 180,
+                top: 10,
+//                scaleX: 0.3,
+//                scaleY: 0.3,
+                clipName: 'pug',
+                clipTo: function(ctx) {
+                    return _.bind(clipByName, pug)(ctx)
+                }
+            });
+            canvas.add(pug);
+        };
+        pugImg.src = img02URL;
+
+        var logoImg = new Image();
+        logoImg.onload = function (img) {
+            var logo = new fabric.Image(logoImg, {
+                angle: 0,
+//                width: 550,
+//                height: 190,
+                left: 0,
+                top: 0,
+//                scaleX: 0.25,
+//                scaleY: 0.25,
+                clipName: 'logo',
+                clipTo: function(ctx) {
+                    return _.bind(clipByName, logo)(ctx)
+                }
+            });
+            canvas.add(logo);
+        };
+        logoImg.src = img01URL;
+
+
+        cEl.width = 400;
+        cEl.height = 400;
+        cEl.style.width = '400px';
+        cEl.style.height = '400px';
+
+    };
+
+
+
+
+</script>
+</body>
+</html>
