@@ -16,16 +16,19 @@
 </style>
 <!--<script src="fabric.js"></script>-->
 <!--<script src="fabric1.4.js"></script>-->
-<script src="fabric1.6.js"></script>
-<!--<script src="fabric1.6-new.js"></script>-->
+<!--<script src="fabric1.6.js"></script>-->
+<script src="fabric1.6-new.js"></script>
 <!--<script src="loadHash.js"></script>-->
 <script src="underscore.js"></script>
 <script src="jquery.min.js"></script>
 
 <body>
 
-<canvas id="c" width="400" height="400"  style="border: 0px solid #ccc;width:400px;height:400px"></canvas>
+<canvas id="c" width="300" height="300"  style="border: 0px solid #ccc;width:400px;height:400px"></canvas>
 
+<button type="button" id="test">1111</button>
+<button type="button" id="test2">1111</button>
+<button type="button" id="test3">delete</button>
 
     <script>
 
@@ -209,7 +212,12 @@
 
 <script>
 
+
+
+
     window.onload = function () {
+
+
         var img01URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i4/1732912933/TB2Z63kXK38SeJjSZFPXXc_vFXa-1732912933.jpg';
         var img02URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i4/1732912933/TB2Z63kXK38SeJjSZFPXXc_vFXa-1732912933.jpg';
 
@@ -229,7 +237,7 @@
         ], {
             originX: 'left',
             originY: 'top',
-            fill: 'transparent', /* use transparent for no fill */
+            fill: 'red', /* use transparent for no fill */
             strokeWidth: 0,
             selectable: false
         });
@@ -249,7 +257,7 @@
         ], {
             originX: 'left',
             originY: 'top',
-            fill: 'transparent', /* use transparent for no fill */
+            fill: 'red', /* use transparent for no fill */
             strokeWidth: 0,
             selectable: false
         });
@@ -266,8 +274,8 @@
 //            }).first()
 
             return _(canvas.getObjects()).where({
-                        clipFor: name
-                    })[0]
+                clipFor: name
+            })[0]
 
         }
 
@@ -301,6 +309,7 @@
 
             var isPolygon = clipObj instanceof fabric.Polygon;
             // polygon cliping area
+            var i;
             if(isPolygon)
             {
                 // prepare points of polygon
@@ -334,49 +343,94 @@
             ctx.restore();
         }
 
-        var pugImg = new Image();
-        pugImg.onload = function (img) {
-            var pug = new fabric.Image(pugImg, {
+
+        cEl.width = 300;
+        cEl.height = 300;
+        cEl.style.width = '300px';
+        cEl.style.height = '300px';
+
+        var PUG = null;
+        document.getElementById("test").onclick = function () {
+
+
+
+
+            var pugImg = new Image();
+            pugImg.onload = function (img) {
+                PUG = new fabric.Image(pugImg, {
 //                angle: 45,
 //                width: 500,
 //                height: 500,
-                left: 180,
-                top: 10,
+                    left: 180,
+                    top: 10,
 //                scaleX: 0.3,
 //                scaleY: 0.3,
-                clipName: 'pug',
-                clipTo: function(ctx) {
-                    return _.bind(clipByName, pug)(ctx)
-                }
-            });
-            canvas.add(pug);
-        };
-        pugImg.src = img02URL;
+                    clipName: 'pug',
+                    clipTo: function(ctx) {
+                        return _.bind(clipByName, PUG)(ctx)
+                    }
+                });
+                canvas.add(PUG);
+            };
+            pugImg.src = img02URL;
 
-        var logoImg = new Image();
-        logoImg.onload = function (img) {
-            var logo = new fabric.Image(logoImg, {
-                angle: 0,
+//            var logoImg = new Image();
+//            logoImg.onload = function (img) {
+//                var logo = new fabric.Image(logoImg, {
+//                    angle: 0,
+////                width: 550,
+////                height: 190,
+//                    left: 0,
+//                    top: 0,
+////                scaleX: 0.25,
+////                scaleY: 0.25,
+//                    clipName: 'logo',
+//                    clipTo: function(ctx) {
+//                        return _.bind(clipByName, logo)(ctx)
+//                    }
+//                });
+//                canvas.add(logo);
+//            };
+//            logoImg.src = img01URL;
+
+
+
+        };
+
+        document.getElementById("test2").onclick = function () {
+
+
+
+
+            var logoImg = new Image();
+            logoImg.onload = function (img) {
+                var logo = new fabric.Image(logoImg, {
+                    angle: 0,
 //                width: 550,
 //                height: 190,
-                left: 0,
-                top: 0,
+                    left: 0,
+                    top: 0,
 //                scaleX: 0.25,
 //                scaleY: 0.25,
-                clipName: 'logo',
-                clipTo: function(ctx) {
-                    return _.bind(clipByName, logo)(ctx)
-                }
-            });
-            canvas.add(logo);
+                    clipName: 'logo',
+                    clipTo: function(ctx) {
+                        return _.bind(clipByName, logo)(ctx)
+                    }
+                });
+                canvas.add(logo);
+            };
+            logoImg.src = img01URL;
+
+
+
         };
-        logoImg.src = img01URL;
 
+        document.getElementById("test3").onclick = function () {
 
-        cEl.width = 400;
-        cEl.height = 400;
-        cEl.style.width = '400px';
-        cEl.style.height = '400px';
+            canvas.remove(PUG);
+
+        };
+
 
     };
 
