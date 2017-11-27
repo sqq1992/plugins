@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <style>
+        div{
+            margin: 30px;
+        }
+
+        #center{
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+    </style>
 </head>
 <body>
 
+    <div class="">111111</div>
+    <div class="">222222</div>
+
+    <div class="alert alert-danger" id="center">dsadsadsadsad</div>
 
 <script>
 
-    //1
-    function getSearch(attr) {
 
-        var str = "?name=jawil&age=23";
-        var reg = new RegExp('[?&]' + attr + '=([^&]*)');
-
-        console.log(reg.exec(str))
-
-    }
-
-//    getSearch('name');
-
-    //2
-    var reg = /\B(?=(\d{3})+(?!\d))/g;
-    var num = '1234567890';
-    var c = num.replace(reg,function (o,j) {
-        console.log(j);
-        return "," + j;
-    })
-    console.log(c);
 
 
 </script>

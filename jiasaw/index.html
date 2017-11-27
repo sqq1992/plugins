@@ -28,187 +28,9 @@
 
 <button type="button" id="test">1111</button>
 <button type="button" id="test2">2222</button>
+<button type="button" id="test33">3333</button>
 <button type="button" id="test3">delete</button>
 <button type="button" id="test4">border</button>
-
-    <script>
-
-//        $(document).ready(function(){
-//
-//            var canvas = document.getElementById('c'),
-//                    parent = $(canvas.parentNode);
-//            var context = canvas.getContext("2d");
-//            this.context = context;
-//            var width = parent.width(),
-//                    height = parent.height();
-//
-//            canvas.width = 400;
-//            canvas.height = 400
-//
-//
-//                var img01URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i2/1732912933/TB2nV8YXcaCJuJjy1zkXXbelVXa-1732912933.jpg';
-//                var img02URL = 'https://img.alicdn.com/bao/uploaded/i2/1732912933/TB2xVACdSCI.eBjy1XbXXbUBFXa-1732912933.jpg';
-//
-//                var canvas = new fabric.Canvas('c');
-//
-//    // Note the use of the `originX` and `originY` properties, which we set
-//    // to 'left' and 'top', respectively. This makes the math in the `clipTo`
-//    // functions a little bit more straight-forward.
-//                var clipPoly = new fabric.Polygon([
-//                    { x: 180, y: 10 },
-//                    { x: 300, y: 50 },
-//                    { x: 300, y: 180 },
-//                    { x: 180, y: 220 }
-//                ], {
-//                    originX: 'left',
-//                    originY: 'top',
-//                    left: 180,
-//                    top: 10,
-//                    width: 200,
-//                    height: 200,
-//                    fill: '#DDD', /* use transparent for no fill */
-//                    strokeWidth: 0,
-//                    selectable: false
-//                });
-//    // We give these `Rect` objects a name property so the `clipTo` functions can
-//    // find the one by which they want to be clipped.
-//                clipPoly.set({
-//                    clipFor: 'pug'
-//                });
-//                canvas.add(clipPoly);
-//
-//                var clipRect2 = new fabric.Rect({
-//                    originX: 'left',
-//                    originY: 'top',
-//                    left: 10,
-//                    top: 10,
-//                    width: 150,
-//                    height: 150,
-//                    fill: '#DDD', /* use transparent for no fill */
-//                    strokeWidth: 0,
-//                    selectable: false
-//                });
-//    // We give these `Rect` objects a name property so the `clipTo` functions can
-//    // find the one by which they want to be clipped.
-//                clipRect2.set({
-//                    clipFor: 'logo'
-//                });
-//                canvas.add(clipRect2);
-//
-//                function findByClipName(name) {
-//                    return _(canvas.getObjects()).where({
-//                        clipFor: name
-//                    }).__wrapped__[0]
-//                }
-//
-//    // Since the `angle` property of the Image object is stored
-//    // in degrees, we'll use this to convert it to radians.
-//                function degToRad(degrees) {
-//                    return degrees * (Math.PI / 180);
-//                }
-//
-//                var clipByName = function (ctx) {
-//                    this.setCoords();
-//                    var clipObj = findByClipName(this.clipName);
-//                    var scaleXTo1 = (1 / this.scaleX);
-//                    var scaleYTo1 = (1 / this.scaleY);
-//                    var skewXReverse = - this.skewX;
-//                    var skewYReverse = - this.skewY;
-//                    ctx.save();
-//
-//                    var ctxLeft = -( this.width / 2 ) + clipObj.strokeWidth;
-//                    var ctxTop = -( this.height / 2 ) + clipObj.strokeWidth;
-//                    var ctxWidth = clipObj.width - clipObj.strokeWidth;
-//                    var ctxHeight = clipObj.height - clipObj.strokeWidth;
-//
-//
-//                    ctx.translate( ctxLeft, ctxTop );
-//                    ctx.scale(scaleXTo1, scaleYTo1);
-//                    ctx.transform(1, skewXReverse, skewYReverse, 1, 0, 0);
-//                    ctx.rotate(degToRad(this.angle * -1));
-//
-//                    ctx.beginPath();
-//
-//                    var isPolygon = clipObj instanceof fabric.Polygon;
-//                    // polygon cliping area
-//                    if(isPolygon)
-//                    {
-//                        // prepare points of polygon
-//                        var points = [];
-//                        for(i in clipObj.points)
-//                            points.push({
-//                                x: (clipObj.left + clipObj.width / 2) + clipObj.points[i].x - this.oCoords.tl.x,
-//                                y: (clipObj.top + clipObj.height / 2) + clipObj.points[i].y - this.oCoords.tl.y
-//                            });
-//
-//                        ctx.moveTo(points[0].x, points[0].y);
-//                        for(i=1; i<points.length; ++i)
-//                        {
-//                            ctx.lineTo(points[i].x, points[i].y);
-//                        }
-//                        ctx.lineTo(points[0].x, points[0].y);
-//                    }
-//                    // rectangle cliping area
-//                    else
-//                    {
-//                        ctx.rect(
-//                                clipObj.left - this.oCoords.tl.x,
-//                                clipObj.top - this.oCoords.tl.y,
-//                                clipObj.width,
-//                                clipObj.height
-//                        );
-//                    }
-//
-//                    ctx.closePath();
-//
-//                    ctx.restore();
-//                }
-//
-//                var pugImg = new Image();
-//                pugImg.onload = function (img) {
-//                    var pug = new fabric.Image(pugImg, {
-//                        angle: 45,
-//
-//                        left: 230,
-//                        top: 50,
-//
-//                        clipName: 'pug',
-//                        clipTo: function(ctx) {
-//                            return _.bind(clipByName, pug)(ctx)
-//                        }
-//                    });
-//                    canvas.add(pug);
-//                };
-//                pugImg.src = img02URL;
-//
-//                var logoImg = new Image();
-//                logoImg.onload = function (img) {
-//                    var logo = new fabric.Image(logoImg, {
-//                        angle: 0,
-////                        width: 550,
-////                        height: 190,
-//                        left: 50,
-//                        top: 50,
-////                        scaleX: 0.25,
-////                        scaleY: 0.25,
-//                        clipName: 'logo',
-//                        clipTo: function(ctx) {
-//                            return _.bind(clipByName, logo)(ctx)
-//                        }
-//                    });
-//                    canvas.add(logo);
-//                };
-//                logoImg.src = img01URL;
-//
-//
-//        });
-
-
-
-
-
-
-    </script>
 
 
 <script>
@@ -221,6 +43,7 @@
 
         var img01URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i4/1732912933/TB2Z63kXK38SeJjSZFPXXc_vFXa-1732912933.jpg';
         var img02URL = 'https://img.alicdn.com/bao/uploaded/https://img.alicdn.com/imgextra/i4/1732912933/TB2Z63kXK38SeJjSZFPXXc_vFXa-1732912933.jpg';
+        var img03URL = 'https://img.alicdn.com/bao/uploaded/i4/1732912933/TB2T7WZc4Rzc1FjSZFPXXcGAFXa-1732912933.jpg';
 
         var cEl = document.getElementById('c');
 
@@ -235,6 +58,8 @@
             var target = canvas.findTarget(e);
             var delta = e.originalEvent.wheelDelta / 720;
 
+            console.log(e);
+            console.log(PUG);
             if (target) {
 
                 target.scaleX += delta;
@@ -308,7 +133,7 @@
             clipFor: 'logo'
         });
         canvas.add(clipRect2);
-        canvas.moveTo(clipRect2, 100);
+        canvas.moveTo(clipRect2, 200);
 
         function findByClipName(name) {
 //            return _(canvas.getObjects()).where({
@@ -446,7 +271,9 @@
                     }
                 });
                 canvas.add(logo);
-                canvas.moveTo(logo, 30);
+                canvas.moveTo(logo, 130);
+                clipRect2.bringToFront(logo);
+                canvas.renderAll();
             };
             logoImg.src = img01URL;
 
@@ -490,6 +317,31 @@
 //            canvas.renderAll();
         };
 
+        document.getElementById("test33").onclick = function () {
+
+            var tempImg = new Image();
+            tempImg.onload = function (img) {
+                var logo = new fabric.Image(tempImg, {
+                    angle: 0,
+//                width: 550,
+//                height: 190,
+                    left: 0,
+                    top: 0,
+//                scaleX: 0.25,
+//                scaleY: 0.25,
+                    clipName: 'extra',
+                    clipTo: function(ctx) {
+                        return _.bind(clipByName, logo)(ctx)
+                    }
+                });
+                canvas.add(logo);
+                canvas.moveTo(logo, 120);
+            };
+            tempImg.src = img03URL;
+
+
+
+        };
 
     };
 
