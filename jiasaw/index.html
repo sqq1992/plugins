@@ -27,8 +27,9 @@
 <canvas id="c" width="300" height="300"  style="border: 0px solid #ccc;width:400px;height:400px"></canvas>
 
 <button type="button" id="test">1111</button>
-<button type="button" id="test2">1111</button>
+<button type="button" id="test2">2222</button>
 <button type="button" id="test3">delete</button>
+<button type="button" id="test4">border</button>
 
     <script>
 
@@ -226,6 +227,38 @@
 
         var canvas = new fabric.Canvas('c');
 
+        //events
+        canvas.observe("object:scaling", function (o) {
+            console.log(o);
+        });
+        $(canvas.wrapperEl).on('mousewheel', function(e) {
+            var target = canvas.findTarget(e);
+            var delta = e.originalEvent.wheelDelta / 720;
+
+            if (target) {
+
+                target.scaleX += delta;
+                target.scaleY += delta;
+
+                // constrain
+
+                if (target.scaleX < 0.1) {
+                    target.scaleX = 0.1;
+                    target.scaleY = 0.1;
+                }
+                // constrain
+                if (target.scaleX > 10) {
+                    target.scaleX = 10;
+                    target.scaleY = 10;
+                }
+
+                console.log(target.scaleX, target.scaleY);
+                target.setCoords();
+                canvas.renderAll();
+            }
+        });
+
+
         // Note the use of the `originX` and `originY` properties, which we set
         // to 'left' and 'top', respectively. This makes the math in the `clipTo`
         // functions a little bit more straight-forward.
@@ -237,8 +270,10 @@
         ], {
             originX: 'left',
             originY: 'top',
-            fill: 'red', /* use transparent for no fill */
-            strokeWidth: 0,
+            fill: 'transparent', /* use transparent for no fill */
+            selectionLineWidth: 2,
+            strokeWidth: 2,
+            selectionBorderColor :'red',
             selectable: false
         });
         // We give these `Rect` objects a name property so the `clipTo` functions can
@@ -257,9 +292,15 @@
         ], {
             originX: 'left',
             originY: 'top',
-            fill: 'red', /* use transparent for no fill */
-            strokeWidth: 0,
+            fill: "transparent",
+//            strokeWidth: 0.75,
+//            stroke: 'rgb(255,0,0)',
+//            borderColor: 'red',
+//            cornerColor: 'green',
+//            transparentCorners: false,
             selectable: false
+//            selectionBorderColor :'red',
+//            selectable: false
         });
         // We give these `Rect` objects a name property so the `clipTo` functions can
         // find the one by which they want to be clipped.
@@ -267,6 +308,7 @@
             clipFor: 'logo'
         });
         canvas.add(clipRect2);
+        canvas.moveTo(clipRect2, 100);
 
         function findByClipName(name) {
 //            return _(canvas.getObjects()).where({
@@ -365,33 +407,19 @@
                     top: 10,
 //                scaleX: 0.3,
 //                scaleY: 0.3,
+                    borderColor: 'blue',
+                    cornerColor: 'blue',
+                    borderScaleFactor: 0.2,
                     clipName: 'pug',
                     clipTo: function(ctx) {
                         return _.bind(clipByName, PUG)(ctx)
                     }
                 });
                 canvas.add(PUG);
+                canvas.moveTo(PUG, 30);
             };
             pugImg.src = img02URL;
 
-//            var logoImg = new Image();
-//            logoImg.onload = function (img) {
-//                var logo = new fabric.Image(logoImg, {
-//                    angle: 0,
-////                width: 550,
-////                height: 190,
-//                    left: 0,
-//                    top: 0,
-////                scaleX: 0.25,
-////                scaleY: 0.25,
-//                    clipName: 'logo',
-//                    clipTo: function(ctx) {
-//                        return _.bind(clipByName, logo)(ctx)
-//                    }
-//                });
-//                canvas.add(logo);
-//            };
-//            logoImg.src = img01URL;
 
 
 
@@ -418,6 +446,7 @@
                     }
                 });
                 canvas.add(logo);
+                canvas.moveTo(logo, 30);
             };
             logoImg.src = img01URL;
 
@@ -429,6 +458,36 @@
 
             canvas.remove(PUG);
 
+        };
+
+        document.getElementById("test4").onclick = function () {
+
+
+            clipRect2.set({
+                strokeWidth: 0.75,
+                stroke: 'rgb(255,0,0)'
+            })
+            canvas.renderAll();
+
+//            clipRect2.set("borderColor", "blue");
+//            canvas.getActiveObject().setBackgroundColor('rgba(0,255,0,1)');
+
+//            clipRect2.set("borderWidth", "2px");
+//            clipRect2.set('borderColor', 'blue');
+//            clipRect2.set('fill', 'blue');
+
+
+//            clipRect2.set({
+//                borderDashArray: [2, 2],
+//                borderWidth:4,
+//                borderColor: 'green',
+//                cornerColor: 'blue',
+//                cornerSize: 18
+//            });
+//            clipRect2.setBackgroundColor('rgba(255, 73, 64, 0.6)', canvas.renderAll.bind(canvas));
+
+//            canvas.renderAll.bind(canvas)
+//            canvas.renderAll();
         };
 
 
