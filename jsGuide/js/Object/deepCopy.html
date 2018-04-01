@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>深度拷贝</title>
+    <script src="inherit.js"></script>
+    <style>
+        .a[disabled="disabled"]{
+            background: red;
+        }
+    </style>
+</head>
+<body>
+
+
+<script>
+
+   
+    function isType(obj,type) {
+
+        if(typeof obj!=="object") return false;
+        var detailType = Object.prototype.toString.call(obj);
+
+        var flag
+        switch (type){
+            case "Array":
+                flag = detailType === "[object Array]";
+                break;
+            case "Date":
+                flag = detailType === "[object Date]";
+                break;
+            case "RegExp":
+                flag = detailType === "[object RegExp]";
+                break;
+            default:
+                flag = false;
+                break;
+        }
+        return flag;
+    }
+
+    function getRegExp(re) {
+        var flags = '';
+        if (re.global) flags += 'g';
+        if (re.ignoreCase) flags += 'i';
+        if (re.multiline) flags += 'm';
+        return flags;
+    }
+
+
+
+    function clone(obj) {
+
+        var parents = [];
+        var children = [];
+
+        var _clone = function (previousObj) {
+
+            var child,proto
+
+            if(isType(previousObj,'Array')){
+                child = [];
+            }else if(isType(previousObj,'Date')){
+                child = new Date(previousObj.getTime());
+            }else if(isType(previousObj,'RegExp')){
+                child = new RegExp(previousObj.source, getRegExp(previousObj));
+                if(previousObj.lastIndex)child.lastIndex = previousObj.lastIndex;
+            }else {
+                proto = Object.getPrototypeOf(previousObj);
+                child = Object.create(proto)
+            }
+
+
+            //todo handle circle
+            var index =parents.indexOf(previousObj);
+
+            if(index!=-1){
+                return children[index];
+            }
+            parents.push(previousObj);
+            children.push(child);
+
+
+            for(var i in previousObj){
+                child[i] = _clone(previousObj[i]);
+            }
+
+            return child;
+
+        }
+
+        return _clone(obj);
+    }
+
+
+    //todo test
+    function person(pname) {
+        this.name = pname;
+    }
+
+    const Messi = new person('Messi');
+
+    function say() {
+        console.log('hi');
+    }
+
+    const oldObj = {
+        a: say,
+        c: new RegExp('ab+c', 'i'),
+        d: Messi,
+    };
+
+    oldObj.b = oldObj;
+
+    
+    console.log(clone(oldObj))
+
+</script>
+
+</body>
+</html>
