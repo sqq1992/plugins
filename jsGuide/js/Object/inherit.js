@@ -1,6 +1,6 @@
 /**
- * ¼Ì³Ðº¯Êý
- * @param obj   ´«ÈëµÄ¶ÔÏó
+ * ï¿½Ì³Ðºï¿½ï¿½ï¿½
+ * @param obj   ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
  * @returns {*}
  */
 function inherit(obj){
@@ -9,21 +9,17 @@ function inherit(obj){
 
     var type = typeof obj;
     if(type!=='object' && type!=='function') throw TypeError();
-    var f = function () {
-    };
+    var f = function () {};
 
     f.prototype = obj;
     return new f();
 }
 
 
-////Ïà»¥ÒýÓÃµÄ¶ÔÏó,»áÒý·¢ÄÚ´æÐ¹Â©£¬µ¼ÖÂÉ¾²»µô
-//var a = {p: {x: 1}};
-//var b = a.p;
-//delete a.p;
+
 
 /**
- * ¼Ì³Ðº¯Êý£¬ o½«¼Ì³Ðp
+ * ï¿½Ì³Ðºï¿½ï¿½ï¿½ï¿½ï¿½ oï¿½ï¿½ï¿½Ì³ï¿½p
  * @param o
  * @param p
  */
@@ -44,7 +40,7 @@ var aa = Object.create(AA);
 var test = AA.isPrototypeOf(aa);
 
 /**
- * ÅÐ¶ÏÕâ¸öÖµµÄÀàÐÍ
+ * ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * @param obj
  */
 function classOf(obj){
