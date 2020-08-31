@@ -19,8 +19,8 @@
 
 
     TurnShow.prototype._config = function () {
-        this.viewList = this.element.find(".view-list");
-        this.lists = this.viewList.find("li");
+        this.viewList = this.element.find(".turn-show-visible-box");
+        this.lists = this.viewList.find(".turn-show-list");
         this.ownedLen = this.lists.length;
 
         //配置页面宽度和单个移动宽度
@@ -33,32 +33,63 @@
         this.flag = true;
     };
 
-    TurnShow.prototype.setStructure = function () {
-        var showLength = this.showLength,
-            copyLen = showLength - 1,
-            oneWidth = this.oneWidth,
-            prevNodes = this.lists.slice(showLength - copyLen-1, showLength).clone(true),
-            nextNodes = this.lists.slice(0, copyLen).clone(true),
-            addLen = prevNodes.size();
 
+    TurnShow.prototype._setLoopStructure = function () {
+        var showLength = this.showLength,
+            ownedLen = this.ownedLen,
+            oneWidth = this.oneWidth,
+            prevNodes = this.lists.slice(ownedLen - showLength, ownedLen).clone(true),
+            nextNodes = this.lists.slice(0, showLength).clone(true);
 
         this.viewList.prepend(prevNodes);
         this.viewList.append(nextNodes);
 
         //配置新的页面宽度和结构
-        var newList = this.viewList.find("li");
+        var newList = this.viewList.find(".turn-show-list");
         newList.width(this.oneWidth);
         var newListLen = newList.size();
         this.viewList.width(oneWidth * newListLen);
 
         //配置初始位置
-        var copyLen = prevNodes.size();
-        this.initPosition = -copyLen * oneWidth;
+        this.initPosition = -showLength * oneWidth;
         this.viewList.css("margin-left",+ this.initPosition + "px");
 
         //配置索引
-        this.firstIndex = -addLen;
-        this.lastIndex = this.showLength + addLen - 2;
+        this.firstIndex = -showLength;
+        this.lastIndex = ownedLen;
+        this.leftRecoverIndex = ownedLen - showLength;
+        this.rightRecoverIndex = 0;
+
+    };
+
+    TurnShow.prototype._setStructure = function () {
+        var showLength = this.showLength,
+            ownedLen = this.ownedLen,
+            oneWidth = this.oneWidth;
+
+
+        //配置新的页面宽度和结构
+        var newList = this.viewList.find(".turn-show-list");
+        newList.width(this.oneWidth);
+        var newListLen = newList.size();
+        this.viewList.width(oneWidth * newListLen);
+
+        //配置初始位置
+        this.initPosition = 0;
+        this.viewList.css("margin-left",+ this.initPosition + "px");
+
+        //配置索引
+        this.firstIndex = 0;
+        this.lastIndex = ownedLen - showLength;
+
+        if(this.index<=this.firstIndex){
+            this.element.find('.prev-btn').addClass("disabled");
+        }
+
+        if(this.index>=this.lastIndex){
+            this.element.find('.next-btn').addClass("disabled");
+        }
+
 
     };
 
@@ -66,10 +97,45 @@
     TurnShow.prototype.init = function () {
 
         this._config();
-        if(this.ownedLen<=this.showLength) return false;
-        this.setStructure();
-        this.initEvent();
 
+        if(this.options.isLoop){
+            if(this.ownedLen<=this.showLength) return false;
+            this._setLoopStructure();
+            this._initLoopEvent();
+        }else {
+            this._setStructure();
+            this._initEvent();
+        }
+
+    };
+
+    TurnShow.prototype._LoopRun = function (direction) {
+        var _this = this;
+        var index = this.index,
+            oneWidth = this.oneWidth,
+            position = this.initPosition - oneWidth * index;
+
+        this.viewList.animate({
+            "margin-left":position+"px"
+        },200,function () {
+            _this.flag = true;
+
+            var newPoisition;
+            if(direction==="right"){
+                if(index<=_this.firstIndex){
+                    _this.index = _this.leftRecoverIndex;
+                    newPoisition = _this.initPosition - oneWidth * _this.index;
+                    _this.viewList.css("margin-left", newPoisition + "px");
+                }
+
+            }else if(direction==="left"){
+                if(index>=_this.lastIndex){
+                    _this.index = _this.rightRecoverIndex;
+                    newPoisition = _this.initPosition - oneWidth * _this.index;
+                    _this.viewList.css("margin-left", newPoisition + "px");
+                }
+            }
+        })
     };
 
     TurnShow.prototype._run = function (direction) {
@@ -83,41 +149,52 @@
         },200,function () {
             _this.flag = true;
 
-            var newPoisition;
-            if(direction=="right"){
-
-                if(index<=_this.firstIndex){
-                    _this.index += _this.showLength-1;
-                    newPoisition = _this.initPosition - oneWidth * _this.index;
-
-                    _this.viewList.css("margin-left", newPoisition + "px");
-
-                }
-
-            }else if(direction=="left"){
-
-                if(index>=_this.lastIndex){
-                    _this.index -= _this.showLength;
-                    newPoisition = _this.initPosition - oneWidth * _this.index;
-
-                    _this.viewList.css("margin-left", newPoisition + "px");
-                }
-
+            if(_this.index<=_this.firstIndex){
+                _this.element.find('.prev-btn').addClass("disabled");
+            }else {
+                _this.element.find('.prev-btn').removeClass("disabled");
             }
 
-
+            if(_this.index>=_this.lastIndex){
+                _this.element.find('.next-btn').addClass("disabled");
+            }else {
+                _this.element.find('.next-btn').removeClass("disabled");
+            }
 
         })
-
-
-
     };
 
-    //当前侧边栏的显示
-    TurnShow.prototype.initEvent = function () {
+    TurnShow.prototype._initLoopEvent = function () {
         var _this = this;
         this.element
             .on("click", '.prev-btn', function () {
+
+                if(!_this.flag) return false;
+                _this.flag = false;
+                _this.index--;
+                _this._LoopRun('right');
+
+            })
+            .on("click", '.next-btn', function () {
+
+                if(!_this.flag) return false;
+                _this.flag = false;
+                _this.index++;
+                _this._LoopRun('left')
+
+            })
+
+    };
+
+    TurnShow.prototype._initEvent = function () {
+        var _this = this;
+        this.element
+            .on("click", '.prev-btn', function () {
+                var $this = $(this);
+
+                if($this.hasClass("disabled")){
+                    return false;
+                }
 
                 if(!_this.flag) return false;
                 _this.flag = false;
@@ -126,6 +203,11 @@
 
             })
             .on("click", '.next-btn', function () {
+                var $this = $(this);
+
+                if($this.hasClass("disabled")){
+                    return false;
+                }
 
                 if(!_this.flag) return false;
                 _this.flag = false;
@@ -138,9 +220,12 @@
 
 
 
+
+
     //默认配置参数
     TurnShow.DEFAULTS = {
-        showLength:3
+        showLength: 3,
+        isLoop: true
     };
 
     /**
