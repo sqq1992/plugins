@@ -2,8 +2,19 @@
 
     var root = (typeof self == 'object' && self.self == self && self) ||
         (typeof global == 'object' && global.global == global && global);
+    var previousUnderscore = root._;
+    //main func
+    var _ = function (obj) {
+
+        if(!(this instanceof _)){
+            return new _(obj);
+        }
+        this._wrapped = obj;
+    };
+    root._ = _;
 
     //basic config
+
     var ArrayProto = Array.prototype;
     var push = ArrayProto.push;
     var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
@@ -52,18 +63,15 @@
         return Array.from(new Set(array));
     };
 
-    //main func
-    var _ = function (obj) {
 
-        if(!(this instanceof _)){
-            return new _(obj);
-        }
-        this._wrapped = obj;
-    };
-    root._ = _;
 
 
     //functions list
+    _.noConflict = function () {
+        root._ = previousUnderscore;
+        return this;
+    };
+
     _.flatten = function (array,shallow) {
         return flatten(array, shallow, false);
     };
